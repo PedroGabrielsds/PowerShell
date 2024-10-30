@@ -1,0 +1,66 @@
+
+$DadosTeste = @(
+[PSCustomObject]@ { 
+	Filtro = "ETU012345"
+	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@{ 
+	Filtro = "NOT012345" 
+	OU = "OU=STI,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "ET223344" 
+	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "ET09876" 
+	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "ETU0098145"
+	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "ETI098132" 
+	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "NOT098765" 
+	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "NOTE98123" 
+	OU = "OU=Notebooks,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "TER-BIBLIO-12" 
+	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "TER-BIBLIO-08" 
+	OU = "OU=Terminal_Consulta_Biblioteca,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "EVU00a234" 
+	OU = "OU=Virtuais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "EVU000123" 
+	OU = "OU=Virtuais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "EVI000342" 
+	OU = "OU=Virtuais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "ETV012312"
+	OU = "OU=TV-Justica,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@ { 
+	Filtro = "ETU076352" 
+	OU = "OU=TV-Justica,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@{ 
+	Filtro = "ETI000" 
+	OU = "OU=Notebooks,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+})
