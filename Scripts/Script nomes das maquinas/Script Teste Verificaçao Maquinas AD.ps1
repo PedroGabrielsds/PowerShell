@@ -110,22 +110,22 @@ $Caminho = '\\Arquivos\bds\TEMP\Maquinas incorretas.txt'
 
 #===================================================================
 #Inicio Script
-Clear-Host
-$Erro = 0
+
 ForEach ($Maquina in $DadosTeste) { 
    ForEach ($Padrao in $EstacoesSTF){  
 
         If($($Maquina.CN) -match $($Padrao.Filtro) -and ($($Maquina.OU) -eq $($Padrao.OU))){
             $NoPadrao = "$($Maquina.CN) - No padrão STF!"
             Write-Host $NoPadrao
+            Write-Host "=============================================="
             break
+            
             #Add-content -Path $Caminho -Value $NomeCerto_OUErrada
             #Add-Content -Path $Caminho -value "-------------------------------"
              
         } Else{
-            $ForaDoPadrao = "$($Maquina.CN) - Fora do padrão!"
-            Write-Host $ForaDoPadrao
-        
+            Write-Host "Fora do Padrão!"
+  
         }
    
         If ($($Maquina.CN) -match $($Padrao.Filtro) -and ($($Maquina.OU) -ne $($Padrao.OU))){ 
@@ -133,15 +133,27 @@ ForEach ($Maquina in $DadosTeste) {
             Write-Host $NomeCerto_OUErrada
             #Add-Content -Path $Caminho -Value $NomeCerto_OUErrada
             #Add-Content -Path $Caminho -value "-------------------------------"
+            Write-Host "=============================================="
             break 
-           
+            
         }
                     
     }
-Write-Host "=========================================================================================="
-
+            
 }
 #==========================================================================================
+#Condiçoes que foram testadas:
+
+#------------------------------------------------------------------------------------
+#Condição do Fora do padrao:
+            #While($Erro -le 9){
+             #   If($Erro -eq "9"){
+              #      $ForaDoPadrao = "$($Maquina.CN) - Fora do padrão!"
+               #     Write-Host $ForaDoPadrao
+                #    Write-Host "=============================================="
+                #}
+            #}
+#------------------------------------------------------------------------------------
 
                 #$NomeCerto_OUErrada = "$($Maquina.cn) Somente OU Incorreta!"
                 #Add-Content -Path $Caminho -Value $NomeCerto_OUErrada
@@ -151,9 +163,6 @@ Write-Host "====================================================================
                 #$PadraoSTF = "$($Maquina.CN) No padrão STF!"
                 #Add-Content -Path $Caminho -Value $PadraoSTF
                 #Add-Content -Path $Caminho -value "----------------------------------"
-
-
-#==========================================================================================
 
 #If ($($Maquina.CN) -notmatch $($Padrao.Filtro)){
              #$ForaDoPadrao = "$($Maquina.CN) - Fora do padrão!"
@@ -174,8 +183,6 @@ Write-Host "====================================================================
             #$PadraoEncontrado = $true
             #break
 
-
-
             #If($($Maquina.CN) -notmatch $($Padrao.Filtro)) {
             #$ForaDoPadrao = "$($Maquina.CN) - Fora do padrão!"
             #Add-content -path $Caminho -value $ForaDoPadrao
@@ -192,3 +199,4 @@ Write-Host "====================================================================
             #Add-Content -Path $Caminho -value "-------------------------------"
            
         #}
+#==========================================================================================
