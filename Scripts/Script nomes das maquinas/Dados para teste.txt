@@ -63,4 +63,9 @@ $DadosTeste = @(
 [PSCustomObject]@{ 
 	Filtro = "ETI000" 
 	OU = "OU=Notebooks,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+},
+[PSCustomObject]@{
+	Filtro = "ETI101196"
+	OU = "OU=WHfB,OU=STI,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
+
 })

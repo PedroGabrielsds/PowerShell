@@ -105,8 +105,8 @@ $EstacoesSTF = @(
 	OU = "OU=Terminal_Consulta_Biblioteca,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
 },
 [PSCustomObject]@{ 
-	Filtro = 'TER-FROTA-[01][0-9]'
-	OU = "Transporte_STF-Frota,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+	Filtro = "TER-FROTA-[01][0-9]"
+	OU = "Transporte_STF-Frota,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 })
 
 #----------------------------------------------------------------------
@@ -135,30 +135,47 @@ ForEach ($Computador in $ComputadoresAD) {
 #-------------------------------------------------------------------------------
 #Inicio algoritmo
 
-ForEach ($Maquina in $DadosTeste) { 
+ForEach ($Maquina in $Computadores) {
+    $Dentro_Padrao = $false
+    $OUErrada = 0
    ForEach ($Padrao in $EstacoesSTF){  
 
-    $PadraoEncontrado = $false 
-
-        
-        If($($Maquina.CN) -match $($Padrao.Filtro) -and $($Maquina.OU) -eq $($Padrao.OU)) {
-            $PadraoSTF = "$($Maquina.CN) No padrão STF!"
-            Add-Content -Path $Caminho -Value $PadraoSTF
-            $PadraoEncontrado = $false
-
-        }
-        If (($($Maquina.CN) -match $($Padrao.Filtro)) -and ($($Maquina.OU) -ne $($Padrao.OU))) {
-            $NomeCerto_OUErrada = "$($Maquina.cn) Somente OU Incorreta!"
-            Add-Content -Path $Caminho -Value $NomeCerto_OUErrada
-            $PadraoEncontrado = $true
+        If($($Maquina.CN) -match $($Padrao.Filtro) -and ($($Maquina.OU) -eq $($Padrao.OU))){
+            $NoPadrao = "$($Maquina.CN) - No padrão STF!"
+            $Dentro_Padrao = $true
+            #Write-Host $NoPadrao
+            #Write-Host "=============================================="
+            break
             
-        } 
-        If ($($Maquina.CN) -notmatch $($Padrao.Filtro)){
-             $ForaDoPadrao = "$($Maquina.CN) - Fora do padrão!"
-             Add-content -path $Caminho -value $ForaDoPadrao
-             $PadraoEncontrado = $true
+            #Add-content -Path $Caminho -Value $NomeCerto_OUErrada
+            #Add-Content -Path $Caminho -value "-------------------------------"
              
+        } Else{
+            #Write-Host "$($Maquina.CN) - Fora do Padrão!"           
+            $Dentro_Padrao = $false
+
         }
+   
+        If ($($Maquina.CN) -match $($Padrao.Filtro) -and ($($Maquina.OU) -ne $($Padrao.OU))){ 
+            $OUErrada = 1
+            $NomeCerto_OUErrada = "Máquina: $($Maquina.cn) "
+            Write-Host "------------ OU incorreta ------------"
+            Write-Host $NomeCerto_OUErrada
+            Write-Host $($Maquina.OU)
+            Write-Host "=============================================="
+            #Add-Content -Path $Caminho -Value $NomeCerto_OUErrada
+            #Add-Content -Path $Caminho -value "-------------------------------"
+            break  
+        }           
+    }
+    If($Dentro_Padrao -eq $true){
+        #Write-host $NoPadrao
+        #Write-Host "=============================================="
+    } ElseIf($OUErrada -eq 0) {
+        Write-Host "------------ Fora do Padrão ------------"
+        Write-Host "Máquina: $($Maquina.CN)"    
+        Write-Host "$($Maquina.OU)"
+        Write-Host "=============================================="
     }
 }
 
