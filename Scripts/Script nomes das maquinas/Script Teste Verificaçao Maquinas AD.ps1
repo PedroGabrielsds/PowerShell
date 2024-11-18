@@ -2,71 +2,7 @@
 #===================================================================
 #Seletores
 
-$DadosTeste = @(
-[PSCustomObject] @{ 
-	CN = "ETU012345"
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "NOT012345" 
-	OU = "OU=STI,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ET223344" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ET09876" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETU0098145"
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETI098132" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "NOT098765" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "NOTE98123" 
-	OU = "OU=Notebooks,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "TER-BIBLIO-12" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "TER-BIBLIO-08" 
-	OU = "OU=Terminal_Consulta_Biblioteca,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "EVU00a234" 
-	OU = "OU=Virtuais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "EVU000123" 
-	OU = "OU=Virtuais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "EVI000342" 
-	OU = "OU=Virtuais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETV012312"
-	OU = "OU=TV-Justica,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETU076352" 
-	OU = "OU=TV-Justica,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETI000" 
-	OU = "OU=Notebooks,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-})
+$Caminho = '\\Arquivos\bds\TEMP\Test.csv'
 
 $EstacoesSTF = @(
 [PSCustomObject]@{  
@@ -102,46 +38,82 @@ $EstacoesSTF = @(
 	OU = "OU=Terminal_Consulta_Biblioteca,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
 },
 [PSCustomObject]@{ 
-	Filtro = 'TER-FROTA-[01][0-9]'
-	OU = "Transporte_STF-Frota,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
+	Filtro = "TER-FROTA-[01][0-9]"
+	OU = "Transporte_STF-Frota,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 })
 
-$Caminho = '\\Arquivos\bds\TEMP\Maquinas incorretas.txt'
+$Dados_Saidas = @()
 
-#===================================================================
-#Inicio Script
+#----------------------------------------------------------------------
+#Buscar dados AD ->
 
-ForEach ($Maquina in $DadosTeste) { 
+#Importando o modulo do AD
+Import-Module ActiveDirectory
+
+#Variavel que mostra onde o script vai procurar no AD
+$OU = "OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
+
+$Computadores = @()
+
+$ComputadoresAD = Get-ADComputer -Filter * -SearchBase $OU -Properties CN, DistinguishedName
+
+ForEach ($Computador in $ComputadoresAD) {
+    $OuPath = ($Computador.DistinguishedName -Split ',',2)[1]
+
+    $Computadores += [PScustomObject] @{
+        CN = $Computador.CN
+        OU = $OuPath.Trim()
+    
+    }
+}
+
+#-------------------------------------------------------------------------------
+#Inicio algoritmo
+
+ForEach ($Maquina in $Computadores) {
+    $Dentro_Padrao = $false
+    $OUErrada = 0
    ForEach ($Padrao in $EstacoesSTF){  
 
         If($($Maquina.CN) -match $($Padrao.Filtro) -and ($($Maquina.OU) -eq $($Padrao.OU))){
             $NoPadrao = "$($Maquina.CN) - No padrão STF!"
-            Write-Host $NoPadrao
-            Write-Host "=============================================="
+            $Dentro_Padrao = $true
+            #Write-Host $NoPadrao
+            #Write-Host "=============================================="
             break
             
             #Add-content -Path $Caminho -Value $NomeCerto_OUErrada
             #Add-Content -Path $Caminho -value "-------------------------------"
              
         } Else{
-            Write-Host "Fora do Padrão!"
-  
+            
+            $Dentro_Padrao = $false
+
         }
    
-        If ($($Maquina.CN) -match $($Padrao.Filtro) -and ($($Maquina.OU) -ne $($Padrao.OU))){ 
-            $NomeCerto_OUErrada = "$($Maquina.cn) - Somente OU Incorreta!"
-            Write-Host $NomeCerto_OUErrada
-            #Add-Content -Path $Caminho -Value $NomeCerto_OUErrada
-            #Add-Content -Path $Caminho -value "-------------------------------"
-            Write-Host "=============================================="
-            break 
-            
-        }
-                    
+        If ($($Maquina.CN) -match $($Padrao.Filtro) -and ($($Maquina.OU) -ne $($Padrao.OU))){
+            $OUErrada = 1
+            $NomeCerto_OUErrada = "$($Maquina.CN);$($Maquina.OU);Somente OU Incorreta"
+            Add-Content -Path $Caminho -value $NomeCerto_OUErrada
+            break  
+        }           
     }
-            
+    If($Dentro_Padrao -eq $true){
+        #Write-host $NoPadrao
+        #Write-Host "=============================================="
+
+    } ElseIf($OUErrada -eq 0) {
+        Add-Content -Path $Caminho -Value "$($Maquina.CN);$($Maquina.OU);Fora Do Padrão"
+       
+    }
 }
+
+$Dados_Saidas | Export-Csv -Path $Caminho -NoTypeInformation -Delimiter ";"
+
+
+#FimAlgoritmo
 #==========================================================================================
+
 #Condiçoes que foram testadas:
 
 #------------------------------------------------------------------------------------
