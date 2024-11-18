@@ -2,74 +2,7 @@
 #---------------------------------------------------------------------
 #Seletores
 
-$Caminho = '\\Arquivos\bds\TEMP\Maquinas incorretas.txt'
-
-$DadosTeste = @(
-[PSCustomObject] @{ 
-	CN = "ETU012345"
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "NOT012345" 
-	OU = "OU=STI,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ET223344" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ET09876" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETU0098145"
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETI098132" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "NOT098765" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "NOTE98123" 
-	OU = "OU=Notebooks,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "TER-BIBLIO-12" 
-	OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "TER-BIBLIO-08" 
-	OU = "OU=Terminal_Consulta_Biblioteca,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "EVU00a234" 
-	OU = "OU=Virtuais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "EVU000123" 
-	OU = "OU=Virtuais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "EVI000342" 
-	OU = "OU=Virtuais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETV012312"
-	OU = "OU=TV-Justica,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETU076352" 
-	OU = "OU=TV-Justica,OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-},
-[PSCustomObject] @{ 
-	CN = "ETI000" 
-	OU = "OU=Notebooks,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br" 
-})
-
+$Caminho = '\\Arquivos\bds\TEMP\Maquinas_incorretas.txt'
 
 $EstacoesSTF = @(
 [PSCustomObject]@{  
@@ -151,31 +84,30 @@ ForEach ($Maquina in $Computadores) {
             #Add-Content -Path $Caminho -value "-------------------------------"
              
         } Else{
-            #Write-Host "$($Maquina.CN) - Fora do Padrão!"           
+                      
             $Dentro_Padrao = $false
 
         }
    
         If ($($Maquina.CN) -match $($Padrao.Filtro) -and ($($Maquina.OU) -ne $($Padrao.OU))){ 
             $OUErrada = 1
-            $NomeCerto_OUErrada = "Máquina: $($Maquina.cn) "
-            Write-Host "------------ OU incorreta ------------"
-            Write-Host $NomeCerto_OUErrada
-            Write-Host $($Maquina.OU)
-            Write-Host "=============================================="
-            #Add-Content -Path $Caminho -Value $NomeCerto_OUErrada
-            #Add-Content -Path $Caminho -value "-------------------------------"
+            $NomeCerto_OUErrada = "Máquina: $($Maquina.cn)"
+            Add-Content -Path $Caminho -Value "===== Somente OU incorreta ====="
+            Add-Content -Path $Caminho -Value $NomeCerto_OUErrada
+            Add-Content -Path $Caminho -Value "$($Maquina.OU)"
+            Add-Content -Path $Caminho -value "-------------------------------"
             break  
         }           
     }
     If($Dentro_Padrao -eq $true){
         #Write-host $NoPadrao
         #Write-Host "=============================================="
+
     } ElseIf($OUErrada -eq 0) {
-        Write-Host "------------ Fora do Padrão ------------"
-        Write-Host "Máquina: $($Maquina.CN)"    
-        Write-Host "$($Maquina.OU)"
-        Write-Host "=============================================="
+        Add-Content -Path $Caminho -Value "===== Fora do Padrão ====="
+        Add-Content -Path $Caminho -Value "Máquina: $($Maquina.CN)"
+        Add-Content -Path $Caminho -Value "$($Maquina.OU)"
+        Add-Content -Path $Caminho -Value "-------------------------------"
     }
 }
 
