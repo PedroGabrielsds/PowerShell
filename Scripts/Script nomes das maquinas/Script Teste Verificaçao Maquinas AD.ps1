@@ -2,7 +2,7 @@
 #===================================================================
 #Seletores
 
-$Caminho = '\\Arquivos\bds\TEMP\Test.csv'
+$Caminho = "\\Arquivos\bds\TEMP\Maquinas_AD.csv"
 
 $EstacoesSTF = @(
 [PSCustomObject]@{  
@@ -42,8 +42,6 @@ $EstacoesSTF = @(
 	OU = "Transporte_STF-Frota,OU=Terminais,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 })
 
-$Dados_Saidas = @()
-
 #----------------------------------------------------------------------
 #Buscar dados AD ->
 
@@ -70,6 +68,9 @@ ForEach ($Computador in $ComputadoresAD) {
 #-------------------------------------------------------------------------------
 #Inicio algoritmo
 
+
+Add-Content -Path $Caminho -Value "Nome;OU;Situação"
+
 ForEach ($Maquina in $Computadores) {
     $Dentro_Padrao = $false
     $OUErrada = 0
@@ -78,15 +79,9 @@ ForEach ($Maquina in $Computadores) {
         If($($Maquina.CN) -match $($Padrao.Filtro) -and ($($Maquina.OU) -eq $($Padrao.OU))){
             $NoPadrao = "$($Maquina.CN) - No padrão STF!"
             $Dentro_Padrao = $true
-            #Write-Host $NoPadrao
-            #Write-Host "=============================================="
-            break
-            
-            #Add-content -Path $Caminho -Value $NomeCerto_OUErrada
-            #Add-Content -Path $Caminho -value "-------------------------------"
+            break 
              
         } Else{
-            
             $Dentro_Padrao = $false
 
         }
@@ -108,67 +103,5 @@ ForEach ($Maquina in $Computadores) {
     }
 }
 
-$Dados_Saidas | Export-Csv -Path $Caminho -NoTypeInformation -Delimiter ";"
-
-
 #FimAlgoritmo
-#==========================================================================================
-
-#Condiçoes que foram testadas:
-
-#------------------------------------------------------------------------------------
-#Condição do Fora do padrao:
-            #While($Erro -le 9){
-             #   If($Erro -eq "9"){
-              #      $ForaDoPadrao = "$($Maquina.CN) - Fora do padrão!"
-               #     Write-Host $ForaDoPadrao
-                #    Write-Host "=============================================="
-                #}
-            #}
-#------------------------------------------------------------------------------------
-
-                #$NomeCerto_OUErrada = "$($Maquina.cn) Somente OU Incorreta!"
-                #Add-Content -Path $Caminho -Value $NomeCerto_OUErrada
-                #Add-Content -Path $Caminho -value "-------------------------------"
-
-
-                #$PadraoSTF = "$($Maquina.CN) No padrão STF!"
-                #Add-Content -Path $Caminho -Value $PadraoSTF
-                #Add-Content -Path $Caminho -value "----------------------------------"
-
-#If ($($Maquina.CN) -notmatch $($Padrao.Filtro)){
-             #$ForaDoPadrao = "$($Maquina.CN) - Fora do padrão!"
-             #Add-content -path $Caminho -value $ForaDoPadrao
-             #$PadraoEncontrado = $true
-             
-        #}
-
-
-    #If ($($Maquina.CN) -match $($Padrao.Filtro) -and $($Maquina.OU) -ne $($Padrao.OU)) {
-     #           $NomeCerto_OUErrada = "$($Maquina.cn) Somente OU Incorreta!"
-      #          Add-Content -Path $Caminho -Value $NomeCerto_OUErrada
-       #        $PadraoEncontrado = $true
-
-       #$PadraoSTF = "$($Maquina.CN) No padrão STF!"
-            #Add-Content -Path $Caminho -Value $PadraoSTF
-            #Add-Content -Path $Caminho -value "----------------------------------"
-            #$PadraoEncontrado = $true
-            #break
-
-            #If($($Maquina.CN) -notmatch $($Padrao.Filtro)) {
-            #$ForaDoPadrao = "$($Maquina.CN) - Fora do padrão!"
-            #Add-content -path $Caminho -value $ForaDoPadrao
-            #Add-Content -Path $Caminho -value "-------------------------------"
-            #$PadraoEncontrado = $true
-            #break
-
-        #}
-
-        #If ($($Maquina.CN) -notmatch $($Padrao.Filtro)) {
-         #   $ForaDoPadrao = "$($Maquina.CN) - Fora do padrão!"
-          #  Write-Host $ForaDoPadrao
-            #Add-content -path $Caminho -value $ForaDoPadrao
-            #Add-Content -Path $Caminho -value "-------------------------------"
-           
-        #}
 #==========================================================================================
