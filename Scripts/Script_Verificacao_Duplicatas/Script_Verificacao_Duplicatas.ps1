@@ -30,12 +30,16 @@ ForEach($Maquina in $MaquinasAD){
  
 ForEach($Computador in $Computadores){
 
-    If(($Computador.CN -match "ETU") -or ($Computador.CN -match "ETI")){
+    If ($Computador.CN -match "ETU") {
         $ETU_ETI += [PsCustomObject] @{
             CN = $Computador.CN
         }
-    } Else{
+    } ElseIf ($Computador.CN -match "ETI") {
+        Add-Content -Path 
+
+    } Else {
         continue
+    
     }
 }
 
