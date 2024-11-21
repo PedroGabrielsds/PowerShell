@@ -15,7 +15,6 @@ Try {
     Write-Host "Ocorreu um erro ao importar o módulo AD!!"
 }
 
-
 $Computadores = @()
 
 $MaquinasAD = Get-ADComputer -Filter * -SearchBase $OU -Properties CN
@@ -26,22 +25,19 @@ ForEach($Maquina in $MaquinasAD){
     
         }
 }
-
-
 #===========================================
 #InicioAlgoritimo 
  
 ForEach($Computador in $Computadores){
+
     If(($Computador.CN -match "ETU") -or ($Computador.CN -match "ETI")){
-        $ETU_ETI = [PsCustomObject] @{
-            CN = $($Computador.CN)
+        $ETU_ETI += [PsCustomObject] @{
+            CN = $Computador.CN
         }
+    } Else{
+        continue
     }
 }
-
-
-
-
 
 #FimAlgoritimo
 #=============================================
