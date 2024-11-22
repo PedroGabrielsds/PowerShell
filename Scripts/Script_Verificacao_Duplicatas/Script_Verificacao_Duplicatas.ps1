@@ -3,7 +3,11 @@
 #Variaveis
 $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 
-$ETU_ETI = @()
+$End = '\\Arquivos\bds\TEMP\Duplicadas.txt'
+
+$ETU = @()
+
+$ETI = @()
 
 #===========================================
 #Importando módulo AD
@@ -31,15 +35,28 @@ ForEach($Maquina in $MaquinasAD){
 ForEach($Computador in $Computadores){
 
     If ($Computador.CN -match "ETU") {
-        $ETU_ETI += [PsCustomObject] @{
-            CN = $Computador.CN
+        $ETU += [PsCustomObject] @{
+           CN = $($Computador)
         }
     } ElseIf ($Computador.CN -match "ETI") {
-        Add-Content -Path 
+        $ETI += [PsCustomObject] @{
+           CN = $($Computador)
+        }
 
     } Else {
         continue
     
+    }
+}
+
+ForEach($Estacao_ETU in $ETU){
+    ForEach($Estacao_ETI in $ETI){
+
+        If($Estacao_ETU -match $Estacao_ETI){
+            $Mensagem = "$($Estacao_ETU), $($Estacao_ETI)"
+            Add-Content -Path $End -Value $Mensagem
+    
+        }
     }
 }
 
