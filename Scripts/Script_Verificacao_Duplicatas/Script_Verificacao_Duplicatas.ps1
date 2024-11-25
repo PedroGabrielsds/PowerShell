@@ -3,12 +3,19 @@
 #Variaveis
 $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 
-$End = '\\Arquivos\bds\TEMP\Duplicadas.txt'
+$End = 'C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script_Verificacao_Duplicatas\Duplicadas.txt'
+
+$End1 = 'C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script_Verificacao_Duplicatas\ETI.txt'
+
+$End2 = 'C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script_Verificacao_Duplicatas\ETU.txt'
 
 $ETU = @()
 
 $ETI = @()
 
+Add-Content -Path $End1 -Value $($ETI)
+
+Add-Content -Path $End2 -Value $($ETU)
 #===========================================
 #Importando módulo AD
 
@@ -36,11 +43,11 @@ ForEach($Computador in $Computadores){
 
     If ($Computador.CN -match "ETU") {
         $ETU += [PsCustomObject] @{
-           CN = $($Computador)
+           CN = $($Computador.CN)
         }
     } ElseIf ($Computador.CN -match "ETI") {
         $ETI += [PsCustomObject] @{
-           CN = $($Computador)
+           CN = $($Computador.CN)
         }
 
     } Else {
@@ -52,13 +59,15 @@ ForEach($Computador in $Computadores){
 ForEach($Estacao_ETU in $ETU){
     ForEach($Estacao_ETI in $ETI){
 
-        If($Estacao_ETU -match $Estacao_ETI){
-            $Mensagem = "$($Estacao_ETU), $($Estacao_ETI)"
-            Add-Content -Path $End -Value $Mensagem
-    
+        If($Estacao_ETU -eq $Estacao_ETI){
+
+            Write-Host "$($Computador.CN)"
+        
         }
     }
 }
+
+
 
 #FimAlgoritimo
 #=============================================
