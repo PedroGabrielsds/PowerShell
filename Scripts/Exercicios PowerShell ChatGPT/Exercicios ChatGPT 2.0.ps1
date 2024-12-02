@@ -91,6 +91,41 @@
 
 
 #=========================================================================================================
+#Exercicio 10:
+#Criando Arquivo
+
+#$Nome = Read-Host "Qual é o seu nome? "
+
+#$Nome_Arquivo = Read-Host "Qual deseja que seja o nome do arquivo? "
+
+#$Caminho = 'C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Exercicios PowerShell ChatGPT\Exercicio 10 - criando arquivos'
+
+#$Endereco = $Caminho + "\$Nome_Arquivo.txt"
+
+
+#If( $Nome_Arquivo -eq $null ) {
+
+  #  Write-Host "O nome do arquivo está vazio ou nulo!" -ForegroundColor Black -BackgroundColor Red
+
+#} Else {
+ #   If(Test-Path $Endereco){
+
+ #       Write-Host "O arquivo já existe" -ForegroundColor Black -BackgroundColor Red
+    
+  #  } Else {
+  #      Write-Host "O arquivo está sendo criado...."
+  #      Sleep -Seconds 2 
+   #     New-Item -Path $Endereco -ItemType File
+   #     Write-Host "O arquivo $Nome_Arquivo foi criado por $Nome!" -ForegroundColor White -BackgroundColor Green
+   #     Start-Process $Endereco
+    
+   # }   
+#}
+
+
+#==========================================================================================================
+
+
 
 
 
