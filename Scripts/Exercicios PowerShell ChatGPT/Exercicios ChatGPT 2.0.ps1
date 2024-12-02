@@ -122,16 +122,45 @@
    # }   
 #}
 
+#==========================================================================================================
+#Exercicio 11: 
+#Contando
+#cls
+
+#$Numero_Inicial = Read-Host "Deseja contar de quanto? "
+
+#$Numero_Final = Read-Host "Até quanto? "
+
+#If($Numero_Inicial -eq $Numero_Final ) {
+ #   Write-Host "Não dá pra contar assim :( " -ForegroundColor Black -BackgroundColor Red
+
+#} Else {
+
+ #   If($Numero_Inicial -LT $Numero_Final ){
+
+ #       [int]$Contador = $Numero_Inicial
+ #       While($Contador -LE $Numero_Final){
+ #           Sleep -Seconds 1
+ #           Write-Host $Contador -ForegroundColor White
+ #           $Contador = $Contador + 1
+        
+  #      }
+  #      Write-Host "Terminei de contar :)" -ForegroundColor Green -BackgroundColor Black
+
+  #  } Else {
+
+  #      [int]$Contador = $Numero_Inicial
+  #      While ($Contador -GE $Numero_Final) {
+  #          Sleep -Seconds 1
+  #          Write-Host $Contador -ForegroundColor White
+  #          $Contador = $Contador - 1
+        
+  #      }
+  #      Write-Host "Terminei de contar :)" -ForegroundColor Green -BackgroundColor Black
+  #  }
+#}
 
 #==========================================================================================================
-
-
-
-
-
-
-
-
 
 #--------------------------------------------------------------------------------------------------------
 #Comandos de buscar informações do computador:
