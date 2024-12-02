@@ -49,7 +49,48 @@
 #$Resultado 
 
 #=========================================================================================================
+#Exercicio 10:
+#Par ou Impar
 
+#cls
+#Write-Host "|======================================|" -ForegroundColor Blue
+#Write-Host "|Desculbra se o número é Par ou Ímpar! |"
+#Write-Host "|======================================|" -ForegroundColor Blue
+
+#$Resposta = "Sim"
+
+#While($Resposta -eq "Sim") {
+ #   $Numero = Read-Host "Digite um número: "
+
+ #   If ($Numero % 2 -eq 0) {
+        
+ #       Cls
+ #       Write-Host "|======================================|" -ForegroundColor Green
+  #      Write-Host "|      O número $Numero é Par!         |" -ForegroundColor Yellow
+  #      Write-Host "|======================================|" -ForegroundColor Green
+
+   # } Else {
+        
+   #     cls
+    #    Write-Host "|======================================|" -ForegroundColor Green
+    #    Write-Host "|      O número $Numero é Ímpar!       |" -ForegroundColor Red
+    #    Write-Host "|======================================|" -ForegroundColor Green
+
+   # }
+
+   # $Resposta = Read-Host "Deseja testar novamente? "
+#}
+
+
+#Sleep -Seconds 3
+#cls
+#Write-Host "|======================================|" -ForegroundColor Green
+#Write-Host "|  Obrigado por usar o Par ou Ímpar!   |" -ForegroundColor Magenta
+#Write-Host "|======================================|" -ForegroundColor Green
+
+
+
+#=========================================================================================================
 
 
 
