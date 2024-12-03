@@ -168,6 +168,8 @@
 #Write-Host "|  Bem vindo ao Get-File! |" -ForegroundColor Yellow -BackgroundColor Black
 #Write-Host "|=========================|" -ForegroundColor Yellow -BackgroundColor Black
 
+#cls
+
 #$Arquivo = Read-Host "Qual arquivo deseja consultar? "
 
 #$Tipo_Arquivo = Read-Host "De qual tipo é o arquivo? Ex:(.txt .pdf .csv)"
