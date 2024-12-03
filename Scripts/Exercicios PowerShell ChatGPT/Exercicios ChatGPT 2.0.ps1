@@ -161,6 +161,48 @@
 #}
 
 #==========================================================================================================
+#Exercicio 12:
+#Procurando arquivos
+#cls
+#Write-Host "|=========================|" -ForegroundColor Yellow -BackgroundColor Black
+#Write-Host "|  Bem vindo ao Get-File! |" -ForegroundColor Yellow -BackgroundColor Black
+#Write-Host "|=========================|" -ForegroundColor Yellow -BackgroundColor Black
+
+#$Arquivo = Read-Host "Qual arquivo deseja consultar? "
+
+#$Tipo_Arquivo = Read-Host "De qual tipo é o arquivo? Ex:(.txt .pdf .csv)"
+
+#$Diretorio = Read-Host "Onde procuro por este arquivo? "
+
+#$Endereco = $Diretorio + "\" + $Arquivo + $Tipo_Arquivo
+
+#If(Test-Path $Endereco){
+#    Write-Host "O arquivo $Arquivo foi localizado com sucesso!" -ForegroundColor Green -BackgroundColor DarkGreen
+#    $Resp = Read-Host "Deseja executa-lo? Sim/Não"
+#    If($Resp -eq "Sim"){
+ #       cls
+  #      Write-Host "Inicializando" -ForegroundColor Green -BackgroundColor Black -NoNewline
+  #      $Ponto = 1
+  #      While($Ponto -Lt 5){
+  #          Sleep -Seconds 1
+  #          Write-Host "." -ForegroundColor Green -BackgroundColor Black -NoNewline 
+  #          $Ponto = $Ponto + 1
+  #      }
+  #      Start-Process $Endereco
+
+  #  }Else {
+
+  #      Write-Host "O arquivo foi localizado com sucesso e está a sua disposição! " -ForegroundColor White -BackgroundColor Green
+    
+  #  }
+
+#} Else {
+
+#    Write-Host "O DIRETORIO NÃO EXISTE!" -ForegroundColor Red -BackgroundColor DarkRed
+
+#}
+
+#==========================================================================================================
 
 #--------------------------------------------------------------------------------------------------------
 #Comandos de buscar informações do computador:
