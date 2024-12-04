@@ -208,10 +208,46 @@
 #Exercicio 13
 #Movendo arquivos
 
+cls
 
+$Diretorio_Antigo = Read-Host "Em qual diretorio está o arquivo? "
 
+$Arquivo = Read-Host "Qual arquivo deseja copiar? "
 
+$Tipo_Arquivo = Read-Host "Qual é o tipo do arquivo? (Ex: .txt, .csv...)"
 
+$Diretorio_Novo = Read-Host "Para qual diretorio deseja coloca-lo? "
+
+$Nome_Arquivo = $Arquivo + $Tipo_Arquivo
+
+$Endereco_Copia = $Diretorio_Antigo + $Nome_Arquivo
+
+$Endereco_Cola = $Diretorio_Novo
+
+Try {
+    $Endereco_Copia
+
+} Catch {
+    Write-Host "O endereço digitado existe!" -ForegroundColor White -BackgroundColor Black
+    Write-Host "Copiando arquivo" -NoNewline -ForegroundColor Green -BackgroundColor DarkGreen
+    [int]$Contador = 1
+    While ($Contador -LE 4) {
+        Write-Host "." -NoNewline -ForegroundColor Green -BackgroundColor DarkGreen
+        $Contador = $Contador + 1
+    }
+}
+
+Try {
+    $Endereco_Cola
+
+} Catch {
+    Write-Host "O endereço em que deseja colar o arquivo existe, deseja colar agora mesmo? (Sim/Não)"
+    If ($Resp -eq "Sim") {
+        
+        Copy-Item -Path $Endereco_Copia -Destination $Endereco_Cola -Confirm
+
+    }
+}
 
 
 
