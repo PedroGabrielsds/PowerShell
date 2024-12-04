@@ -208,48 +208,77 @@
 #Exercicio 13
 #Movendo arquivos
 
-cls
+#cls
 
-$Diretorio_Antigo = Read-Host "Em qual diretorio está o arquivo? "
+#$Diretorio_Antigo = Read-Host "Em qual diretorio está o arquivo? "
 
-$Arquivo = Read-Host "Qual arquivo deseja copiar? "
+#$Arquivo = Read-Host "Qual arquivo deseja copiar? "
 
-$Tipo_Arquivo = Read-Host "Qual é o tipo do arquivo? (Ex: .txt, .csv...)"
+#$Tipo_Arquivo = Read-Host "Qual é o tipo do arquivo? (Ex: .txt, .csv...)"
 
-$Diretorio_Novo = Read-Host "Para qual diretorio deseja coloca-lo? "
+#$Diretorio_Novo = Read-Host "Para qual diretorio deseja coloca-lo? "
 
-$Nome_Arquivo = $Arquivo + $Tipo_Arquivo
+#$Nome_Arquivo = $Arquivo + $Tipo_Arquivo
 
-$Endereco_Copia = $Diretorio_Antigo + $Nome_Arquivo
+#$Endereco_Copia = $Diretorio_Antigo + "\" + $Nome_Arquivo
 
-$Endereco_Cola = $Diretorio_Novo
+#$Endereco_Cola = $Diretorio_Novo
 
-Try {
-    $Endereco_Copia
+#If (Test-Path $Endereco_Copia ) {
 
-} Catch {
-    Write-Host "O endereço digitado existe!" -ForegroundColor White -BackgroundColor Black
-    Write-Host "Copiando arquivo" -NoNewline -ForegroundColor Green -BackgroundColor DarkGreen
-    [int]$Contador = 1
-    While ($Contador -LE 4) {
-        Write-Host "." -NoNewline -ForegroundColor Green -BackgroundColor DarkGreen
-        $Contador = $Contador + 1
-    }
-}
+    #Write-Host "O endereço digitado existe!" -ForegroundColor White -BackgroundColor Black
+   # Write-Host "Copiando arquivo" -NoNewline -ForegroundColor Green -BackgroundColor DarkGreen
+   # [int]$Contador = 1
+   # While ($Contador -LE 4) {
+    #    Write-Host "." -NoNewline -ForegroundColor Green -BackgroundColor DarkGreen
+    #    $Contador = $Contador + 1
+    #    Sleep -Seconds 1
+   # }
 
-Try {
-    $Endereco_Cola
+#} Else {
+    
+   # Write-Host "O endereço não existe!" -ForegroundColor DarkRed -BackgroundColor White
 
-} Catch {
-    Write-Host "O endereço em que deseja colar o arquivo existe, deseja colar agora mesmo? (Sim/Não)"
-    If ($Resp -eq "Sim") {
+#}    
+
+#$Erro = 0
+
+#If (Test-Path $Endereco_Cola) {
+    #$Resp = Read-Host ´n "O endereço em que deseja colar o arquivo existe, deseja colar agora mesmo? (Sim/Não)" 
+   # If ($Resp -eq "Sim") {
         
-        Copy-Item -Path $Endereco_Copia -Destination $Endereco_Cola -Confirm
+     #   Copy-Item -Path $Endereco_Copia -Destination $Endereco_Cola -Confirm
+     #   Sleep -Seconds 1
+    #    Start-Process -FilePath $Endereco_Cola
 
-    }
-}
+  #  } Else {
+  #      [int]$Erro = 1
+  #      Write-Host "Obrigado por usar o Scrip Cloning-Files!" -ForegroundColor Yellow -BackgroundColor Black 
+    
+  #  }
 
+#} Else {
+ #   Write-Host "O endereço não existe!" -ForegroundColor Red -BackgroundColor DarkRed
 
+#}
+
+#If ($Erro -eq 1) { 
+ #   $Erro = 0
+
+#} Else {
+   # cls
+   # Write-Host "|==========================================|"  -ForegroundColor Yellow -BackgroundColor Black
+   # Sleep -Seconds 1
+   # $Frase =  "| Obrigado por usar o Scrip Cloning-Files! |"
+   # ForEach ( $Letra in $Frase.ToCharArray() ) {
+    #    Write-Host -NoNewline $Letra -ForegroundColor Yellow -BackgroundColor Black
+    #    Start-Sleep -Milliseconds 50
+   # }
+
+  #  Write-Host
+  #  Write-Host "|==========================================|" -ForegroundColor Yellow -BackgroundColor Black
+
+#}
 
 #==========================================================================================================
 
