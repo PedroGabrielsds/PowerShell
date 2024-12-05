@@ -46,7 +46,7 @@
 
 #}
 
-#$Resultado 
+#$Resultado
 
 #=========================================================================================================
 #Exercicio 10:
@@ -244,7 +244,7 @@
 #$Erro = 0
 
 #If (Test-Path $Endereco_Cola) {
-    #$Resp = Read-Host ´n "O endereço em que deseja colar o arquivo existe, deseja colar agora mesmo? (Sim/Não)" 
+    #$Resp = Read-Host ´n "O endereço em que deseja colar o arquivo existe, deseja colar agora mesmo? (Sim/Não)"
    # If ($Resp -eq "Sim") {
         
      #   Copy-Item -Path $Endereco_Copia -Destination $Endereco_Cola -Confirm
@@ -253,7 +253,7 @@
 
   #  } Else {
   #      [int]$Erro = 1
-  #      Write-Host "Obrigado por usar o Scrip Cloning-Files!" -ForegroundColor Yellow -BackgroundColor Black 
+  #      Write-Host "Obrigado por usar o Scrip Cloning-Files!" -ForegroundColor Yellow -BackgroundColor Black
     
   #  }
 
@@ -281,6 +281,55 @@
 #}
 
 #==========================================================================================================
+#Exercicio 14:
+
+cls
+
+$Recepcao = "Bem vindo aos Processos do seu computador!"
+ForEach ($Letra in $Recepcao.ToCharArray()) {
+    Write-Host $Letra -NoNewline -ForegroundColor Yellow -BackgroundColor Black
+    Start-Sleep -Milliseconds 100 
+} 
+
+Get-Process
+
+$Resposta = Read-Host "Deseja finalizar algum processo? Sim/Não "
+
+If ( $Resposta -eq "Sim" ){
+    [String]$Processo = Read-Host "Qual processo deseja finalizar? "
+    Try {
+
+        Stop-Process -Name $($Processo)
+        Write-Host "O processo foi finalizado com sucesso..." -ForegroundColor Green -BackgroundColor Black
+
+    } Catch {
+        Write-Host "Error $($_.Exception.Message)" -ForegroundColor Red -BackgroundColor DarkRed
+    
+    }
+    
+} Else {
+
+    Write-Host "Não foi selecionado nenhum processo para finzalizar! " -ForegroundColor DarkRed -BackgroundColor White   
+
+}
+
+Write-Host "Obrigado por usar o script Finish-Process : ) " -ForegroundColor Blue -BackGroundColor Black
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #--------------------------------------------------------------------------------------------------------
@@ -299,7 +348,7 @@
 
 #Get-Partition
 
-#Get-Disk | 
+#Get-Disk |
 
 #Get-Volume | Select-Object @{Name="Espaço_Livre"; Expression={[Math]::Round($_.SizeRemaining / 1GB, 2)}}, @{Name="Espaço"; Expression={[Math]::Round($_.Size / 1GB, 3)}}
 

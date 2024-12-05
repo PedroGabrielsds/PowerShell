@@ -1,0 +1,89 @@
+Que legal que você vai iniciar seus estudos em **Microsoft Configuration Manager** (também conhecido como **SCCM**, **System Center Configuration Manager**)! Este é um produto da Microsoft usado principalmente para gerenciar, distribuir e manter software, configurações e atualizações em dispositivos dentro de uma organização. Vou te dar uma introdução geral para você começar a entender o que é, como funciona e quais são suas principais funcionalidades.
+
+### O que é o Microsoft Configuration Manager (SCCM)?
+
+O **Microsoft Configuration Manager (SCCM)** é uma solução de gerenciamento de sistemas que permite às empresas administrar, controlar e automatizar os computadores e dispositivos móveis dentro da infraestrutura de TI. Ele faz parte do **Microsoft Endpoint Manager**, que inclui também o **Intune** e outras ferramentas para gerenciar dispositivos e aplicativos.
+
+### Principais Funcionalidades do SCCM:
+
+#### 1. **Gerenciamento de Software e Aplicativos**
+   - **Distribuição de Software**: Você pode usar o SCCM para distribuir e instalar software em grandes quantidades de dispositivos de forma automatizada. Isso inclui tanto aplicativos personalizados quanto pacotes de instalação de software populares, como o Office.
+   - **Gerenciamento de Licenças e Atualizações**: Gerenciar licenças de software e garantir que os dispositivos estejam sempre com as versões mais recentes de programas e patches de segurança.
+
+#### 2. **Gerenciamento de Configurações e Políticas**
+   - **Configurações de Sistema e Políticas de Segurança**: O SCCM permite que você defina e aplique configurações e políticas para sistemas operacionais e aplicativos, garantindo que todos os dispositivos de uma organização atendam aos padrões de segurança e conformidade.
+   - **Monitoramento e Relatórios**: Você pode configurar relatórios detalhados sobre o status da conformidade de dispositivos, versões de software, instalações de atualizações, entre outros.
+
+#### 3. **Gerenciamento de Atualizações e Patches**
+   - O SCCM tem uma forte integração com o **Windows Update** e outras fontes de atualizações para garantir que todos os dispositivos da rede estejam atualizados com as correções de segurança mais recentes, sem a necessidade de intervenção manual.
+
+#### 4. **Inventário de Hardware e Software**
+   - **Inventário de Hardware**: O SCCM coleta informações sobre o hardware dos dispositivos gerenciados, como modelo, memória RAM, processador, espaço em disco, etc.
+   - **Inventário de Software**: Ele também coleta informações sobre o software instalado, suas versões, configurações, licenças, etc., facilitando o gerenciamento e a auditoria de ativos de TI.
+
+#### 5. **Gerenciamento de Imagens de Sistema**
+   - O SCCM facilita a criação e implantação de **imagens de sistema** (ou seja, imagens do Windows ou de outras plataformas) em múltiplos dispositivos simultaneamente. Você pode criar uma imagem padrão de um sistema operacional e aplicá-la em todos os dispositivos da sua organização.
+   
+#### 6. **Gerenciamento de Dispositivos Móveis**
+   - Embora o SCCM seja tradicionalmente mais focado em PCs e servidores, ele também suporta a administração de dispositivos móveis (MDM), como smartphones e tablets, especialmente quando combinados com o **Intune**. Isso se torna importante para as organizações que possuem uma força de trabalho móvel ou BYOD (Bring Your Own Device).
+
+#### 7. **Automação e Scripts**
+   - O SCCM permite o uso de **scripts PowerShell** para automação de tarefas, como implantações de software, remoção de programas, configuração de dispositivos e execução de outros comandos administrativos em dispositivos remotos.
+
+### Arquitetura do SCCM:
+
+O **Microsoft SCCM** é baseado em uma **arquitetura cliente-servidor**, onde você tem um servidor central (o servidor do **site principal**) que coordena e distribui as tarefas, e dispositivos de **clientes** (sejam desktops, servidores ou dispositivos móveis) que se comunicam com o servidor para receber comandos, atualizações e software.
+
+A arquitetura do SCCM é composta pelos seguintes componentes principais:
+
+1. **Site Server**: O servidor que hospeda a infraestrutura central do SCCM, incluindo banco de dados, console de administração e ponto de distribuição de conteúdo.
+2. **Site Database**: Banco de dados SQL onde as informações sobre o ambiente gerenciado são armazenadas.
+3. **Management Point (MP)**: Serve como intermediário entre o cliente e o servidor SCCM. Ele fornece informações sobre o gerenciamento de políticas e comunica as ações dos clientes.
+4. **Distribution Point (DP)**: Armazena o conteúdo de software, imagens de sistema e outras informações que precisam ser distribuídas para os clientes.
+5. **Client**: São os dispositivos (desktops, laptops, servidores, dispositivos móveis) que o SCCM gerencia.
+6. **Reporting Services**: Para gerar relatórios detalhados e personalizáveis sobre o ambiente gerenciado.
+
+### Fluxo Básico de Funcionamento:
+
+1. **Configuração e Criação de Imagens/Software**: O administrador cria pacotes de software, imagens de sistema e define políticas de segurança e configuração no console do SCCM.
+2. **Distribuição e Implantação**: O conteúdo (como aplicativos ou atualizações de sistema) é distribuído para os pontos de distribuição.
+3. **Comando e Monitoramento**: O SCCM emite comandos para os dispositivos clientes, que executam tarefas como instalação de software, atualização de sistema, inventário de hardware/software, etc.
+4. **Relatórios e Auditoria**: O SCCM coleta dados dos clientes, gera relatórios e audita o status de conformidade.
+
+### Como Começar a Estudar o SCCM:
+
+1. **Instalação e Configuração**:
+   - Entender como **instalar o SCCM**, configurá-lo e integrá-lo com a infraestrutura existente (servidores, banco de dados SQL, etc.).
+   - A instalação do SCCM envolve a configuração de um **site server**, a configuração do **SQL Server** para armazenar o banco de dados e a definição de componentes como **Management Points**, **Distribution Points** e **Client Deployment**.
+
+2. **Console do SCCM**:
+   - Aprender a **navegar no Console do SCCM**, onde você pode criar pacotes, gerenciar clientes, configurar políticas e gerar relatórios.
+
+3. **Criação de Imagens e Implantações**:
+   - Estudar como criar **imagens personalizadas do Windows**, pacotes de software e atualizações de sistema, além de aprender como implantar essas imagens/softwares em uma rede de dispositivos.
+
+4. **Automação com PowerShell**:
+   - Como o SCCM usa PowerShell para automação de tarefas, aprender a escrever e executar scripts PowerShell no contexto do SCCM pode ser uma habilidade útil.
+
+5. **Relatórios e Monitoramento**:
+   - Aprender a gerar e analisar **relatórios** sobre o status dos dispositivos e o sucesso ou falha de implantações.
+
+6. **Integração com o Intune** (caso sua organização utilize o Intune também):
+   - O **Intune** e o **SCCM** podem ser integrados, formando um **Gerenciamento Híbrido** de dispositivos (comum em organizações que têm dispositivos móveis e de desktop). Vale a pena estudar como funciona essa integração, caso seja relevante para o seu ambiente.
+
+### Recursos para Estudo:
+
+1. **Documentação Oficial** da Microsoft sobre o SCCM:
+   - [SCCM Documentation](https://learn.microsoft.com/en-us/mem/configmgr/)
+   
+2. **Cursos e Certificações**:
+   - A Microsoft oferece cursos e certificações em **Microsoft Endpoint Configuration Manager** (SCCM), que podem ser muito úteis para sua aprendizagem.
+   
+3. **Blogs e Comunidades**:
+   - Muitos especialistas em SCCM e IT admins compartilham suas experiências em blogs e fóruns, como o [TechNet](https://social.technet.microsoft.com/Forums/en-US/home) e o [Reddit](https://www.reddit.com/r/SCCM/).
+
+### Conclusão:
+
+O **Microsoft Configuration Manager (SCCM)** é uma ferramenta poderosa para gerenciamento de sistemas em grande escala. À medida que você avança nos estudos, você aprenderá como configurar, implantar e manter dispositivos e software de forma eficiente em uma organização. Ao dominar o SCCM, você vai se tornar capaz de automatizar processos e garantir que todos os dispositivos da sua rede estejam atualizados e funcionando corretamente.
+
+Se você tiver dúvidas mais específicas sobre qualquer um desses tópicos, não hesite em perguntar!
