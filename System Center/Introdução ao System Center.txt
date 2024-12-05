@@ -1,3 +1,5 @@
+https://learn.microsoft.com/en-us/mem/configmgr/core/understand/introduction
+
 Que legal que você vai iniciar seus estudos em **Microsoft Configuration Manager** (também conhecido como **SCCM**, **System Center Configuration Manager**)! Este é um produto da Microsoft usado principalmente para gerenciar, distribuir e manter software, configurações e atualizações em dispositivos dentro de uma organização. Vou te dar uma introdução geral para você começar a entender o que é, como funciona e quais são suas principais funcionalidades.
 
 ### O que é o Microsoft Configuration Manager (SCCM)?
