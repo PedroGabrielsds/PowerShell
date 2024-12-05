@@ -283,37 +283,37 @@
 #==========================================================================================================
 #Exercicio 14:
 
-cls
+#cls
 
-$Recepcao = "Bem vindo aos Processos do seu computador!"
-ForEach ($Letra in $Recepcao.ToCharArray()) {
-    Write-Host $Letra -NoNewline -ForegroundColor Yellow -BackgroundColor Black
-    Start-Sleep -Milliseconds 100 
-} 
+#$Recepcao = "Bem vindo aos Processos do seu computador!"
+#ForEach ($Letra in $Recepcao.ToCharArray()) {
+#    Write-Host $Letra -NoNewline -ForegroundColor Yellow -BackgroundColor Black
+#    Start-Sleep -Milliseconds 100 
+#} 
 
-Get-Process
+#Get-Process
 
-$Resposta = Read-Host "Deseja finalizar algum processo? Sim/Não "
+#$Resposta = Read-Host "Deseja finalizar algum processo? Sim/Não "
 
-If ( $Resposta -eq "Sim" ){
-    [String]$Processo = Read-Host "Qual processo deseja finalizar? "
-    Try {
+#If ( $Resposta -eq "Sim" ){
+#    [String]$Processo = Read-Host "Qual processo deseja finalizar? "
+#  Try {
 
-        Stop-Process -Name $($Processo)
-        Write-Host "O processo foi finalizado com sucesso..." -ForegroundColor Green -BackgroundColor Black
+ #       Stop-Process -Name $($Processo)
+ #       Write-Host "O processo foi finalizado com sucesso..." -ForegroundColor Green -BackgroundColor Black
 
-    } Catch {
-        Write-Host "Error $($_.Exception.Message)" -ForegroundColor Red -BackgroundColor DarkRed
+ #   } Catch {
+ #       Write-Host "Error $($_.Exception.Message)" -ForegroundColor Red -BackgroundColor DarkRed
     
-    }
+ #   }
     
-} Else {
+#} Else {
 
-    Write-Host "Não foi selecionado nenhum processo para finzalizar! " -ForegroundColor DarkRed -BackgroundColor White   
+ #   Write-Host "Não foi selecionado nenhum processo para finzalizar! " -ForegroundColor DarkRed -BackgroundColor White   
 
-}
+#}
 
-Write-Host "Obrigado por usar o script Finish-Process : ) " -ForegroundColor Blue -BackGroundColor Black
+#Write-Host "Obrigado por usar o script Finish-Process : ) " -ForegroundColor Blue -BackGroundColor Black
 
 
 
