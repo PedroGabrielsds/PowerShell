@@ -3,61 +3,81 @@
 #Exercico 17: 
 #Criando CSV
 
-$arquivoCsv = 'C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Exercicios PowerShell ChatGPT'
+#$LocalCsv = 'C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Exercicios PowerShell ChatGPT'
 
-New-Item -Path $arquivoCsv -Name "Banco_Dados.csv"
+#New-Item -Path $LocalCsv -Name "Banco_Dados.csv"
 
-cls
+#$ArquivoCsv = 'C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Exercicios PowerShell ChatGPT' + "\Banco_Dados.csv"
 
-Write-Host "|========================|" -ForegroundColor Yellow -BackgroundColor Black
-Write-Host "|    Banco de Dados      |" -ForegroundColor Yellow -BackgroundColor Black
-Write-Host "|========================|" -ForegroundColor Yellow -BackgroundColor Black
+#cls
 
-$Email_Correto = '^[a-z0-9+]+@[a-z0-9.-]+\.[a-z]{2,}$'
+#Write-Host "|========================|" -ForegroundColor Yellow -BackgroundColor Black
+#Write-Host "|    Banco de Dados      |" -ForegroundColor Yellow -BackgroundColor Black
+#Write-Host "|========================|" -ForegroundColor Yellow -BackgroundColor Black
 
-$Dados = @()
+#$Resposta_2 = "Sim"
 
-$Nome = Read-Host "Seu nome: "
+#While ($Resposta_2 -eq "Sim") {
 
-$Email = Read-Host "Seu E-mail: "
+#    $Resposta_2 = "Esperando"
 
-If ($Email -match $Email_Correto) {
+#    $Email_Correto = '^[a-z0-9+]+@[a-z0-9.-]+\.[a-z]{2,}$'
 
-    $Dados += [PSCustomObject] @{
-    Nome = $Nome
-    Email = $Email
-    }
-    Clear-Host
-} Else {
-    Write-Host "O e-mail digitado está incorreto! " -ForegroundColor Red -BackgroundColor Black
+#    $Dados = @()
 
+ #   $Nome = Read-Host "Seu nome: "
 
-}
+ #   $Email = Read-Host "Seu E-mail: "
 
-$Bem_Vindo = "Seja bem vindo, $Nome!"
-ForEach ($Letra in $Bem_Vindo.ToCharArray()) {
-    Write-Host $Letra -NoNewline -ForegroundColor Green
-    Start-Sleep -Milliseconds 100
+ #   If ($Email -match $Email_Correto) {
 
-}
+  #      $Dados += [PSCustomObject] @{
+  #      Nome = $Nome 
+  #      Email = $Email
+   #     }
+   #     Clear-Host
+   # } Else {
+    #    Write-Host "O e-mail digitado está incorreto! " -ForegroundColor Red -BackgroundColor Black
 
-Write-Host
-$Resposta = Read-Host "Exportar em um csv? Sim/Não"
+    #}
 
-If(($Resposta -eq "Sim") -or ($Resposta -eq "S")){
+    #$Bem_Vindo = "Seja bem vindo, $Nome!"
+   # ForEach ($Letra in $Bem_Vindo.ToCharArray()) {
+     #   Write-Host $Letra -NoNewline -ForegroundColor Green
+     #   Start-Sleep -Milliseconds 100
+
+    #}
+
+    #Write-Host
+   # $Resposta = Read-Host "Exportar em um csv? Sim/Não"
+
+    #If(($Resposta -eq "Sim") -or ($Resposta -eq "S")){
     
-    Try {
+    #    Try {
         
-        $Dados | Export-Csv -Path $arquivoCsv -NoTypeInformation -Delimiter ";" 
+    #        $Dados | Export-Csv -Path $ArquivoCsv -NoTypeInformation -Delimiter ";"
+    #        Write-Host "Os dados foram exportados com sucesso! " -ForegroundColor Green -BackgroundColor Black
 
-    } Catch {
-        Write-Host "Erro ao exportar para o arquivo.csv"
+    #    } Catch {
+    #        Write-Host "Erro ao exportar para o arquivo.csv" -ForegroundColor Red -BackgroundColor Black
 
-    }
-} Else {
+     #   }
 
-    Write-Host "A operação foi cancelada!" -ForeGroundColor Red -BackGroundColor DarkBlue
+   # } Else {
 
-}
+    #    Write-Host "A operação foi cancelada!" -ForeGroundColor Red -BackGroundColor DarkBlue
+
+    #}
+
+   # $Resposta_2 = Read-Host "Deseja adicionar mais? Sim/Não"
+
+#}
+
+#$Agradecimento = "Operação finalizada com sucesso, obrigado por utilizar nosso script!"
+#ForEach($Letrinha in $Agradecimento.ToCharArray()){
+#    Write-Host $Letrinha -NoNewline -ForegroundColor White -BackgroundColor Black 
+#    Start-Sleep -Milliseconds 25
+#}
+
 
 #=================================================================
