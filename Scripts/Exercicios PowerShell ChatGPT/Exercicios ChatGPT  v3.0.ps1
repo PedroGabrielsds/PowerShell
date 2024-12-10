@@ -1,5 +1,47 @@
 ﻿#Exercicios ChatGPT v 3.0: 
 #=================================================================
+#Exercicio 15:
+#Uso do processador
+
+#cls
+
+#$Continuidade = $true
+
+#while ($Continuidade -eq $true) {
+ #   $UsoCPU = (Get-WmiObject -Class Win32_Processor).LoadPercentage
+  #  If($UsoCPU -lt 2){
+   #     Write-Host "Uso do processador: $UsoCPU%" -ForegroundColor Red -BackgroundColor Black
+    #} Else {
+     #   Write-Host "Uso do processador: $UsoCPU%" -ForegroundColor Green -BackgroundColor Black
+    #}
+    #Start-Sleep -Seconds 5
+    #$Resposta = Read-Host "Deseja continuar verificando o uso do processador? Sim/Não"
+    #If ($Resposta -eq "Sim") {
+     #   $Continuidade = $true
+    
+    #} Else {
+     #   $Continuidade = $false
+      #  cls
+       # Write-Host "Verificação de uso da CPU concluída com sucesso!" -ForegroundColor Yellow -BackgroundColor Black
+    #}
+#}
+
+#===================================================================
+#Exercicio 16:
+
+
+
+
+
+
+
+
+
+
+
+
+
+#===================================================================
 #Exercico 17: 
 #Criando CSV
 
