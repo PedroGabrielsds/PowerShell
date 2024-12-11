@@ -38,18 +38,6 @@ $Destino = Read-Host "De qual diretório deseja renomear os arquivos? "
 
 $Novo_Nome = Read-Host "Qual vai ser o novo nome dos arquivos? "
 
-If ($Novo_Nome -eq $null) {
-    
-    Write-Host "O nome é nulo ou vazio, tente novamente" -NoNewline -ForeGroundColor Red -BackgroundColor Black
-    ForEach ($Ponto in $Tres_pontos.ToCharArray()) {
-        $Tres_pontos = "..."
-        Write-Host $Ponto -ForegroundColor Red -BackgroundColor Black -NoNewline
-        Sleep -Seconds 1
-    }
-} Else {
-    $Novo_Nome = Read-Host "Qual vai ser o novo nome dos arquivos? "
-
-}
 
 $Resposta = Read-Host "Deseja renomear mais arquivos? Sim/Não"
 
@@ -62,19 +50,12 @@ While ($Resposta -eq "Sim") {
         $Fechamento = "Finalizando a operação..."
         ForEach ($Letra in $Fechamento.ToCharArray()) {
             Write-Host $Letra -NoNewline -ForegroundColor Yellow -BackgroundColor Black
+            Sleep -Milliseconds 100
         }        
     }
 }
 
-
-
-
-
-
-
-
-
-
+Write-Host "Operação finalizada." -ForegroundColor Red -BackgroundColor Black
 
 #===================================================================
 #Exercico 17: 
