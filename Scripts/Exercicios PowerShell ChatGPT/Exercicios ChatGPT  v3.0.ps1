@@ -30,35 +30,69 @@
 #Exercicio 16:
 #Renomeando
 
+cls
+
 $Nome = Read-Host "Qual é o seu nome? "
 
 $Mensagem = "Seja bem vindo $Nome!"
 
-$Destino = Read-Host "De qual diretório deseja renomear os arquivos? "
+$Mensagem
 
-$Novo_Nome = Read-Host "Qual vai ser o novo nome dos arquivos? "
+Sleep -Seconds 2
 
+cls
 
-$Resposta = Read-Host "Deseja renomear mais arquivos? Sim/Não"
+$Destino = Read-Host "Em qual diretório está os arquivos que deseja renomear? "        
 
-While ($Resposta -eq "Sim") {
-    $Destino = Read-Host "De qual diretório deseja renomear os arquivos? "
-    If (Test-Path $Destino) {
-        Rename-Item -Path $Destino -NewName $Novo_Nome
+If(-not (Test-Path $Destino)){
 
-    } Else {
-        $Fechamento = "Finalizando a operação..."
-        ForEach ($Letra in $Fechamento.ToCharArray()) {
-            Write-Host $Letra -NoNewline -ForegroundColor Yellow -BackgroundColor Black
-            Sleep -Milliseconds 100
-        }        
-    }
+    Write-Host "O diretório digitado não existe!" -ForegroundColor Red -BackgroundColor Black
+    
+
+} Else {
+    $Arquivos = Get-ChildItem -Path $Destino -File
+    Do {
+        Write-Host "Renomear por completo     [1]" -ForegroundColor Gray -BackgroundColor Black
+        Write-Host "Adicionar somente prefixo [2]" -ForegroundColor Gray -BackgroundColor Black
+        Write-Host "Adicionar somente sufixo  [3]" -ForegroundColor Gray -BackgroundColor Black
+        $Type_Name = Read-Host "Digite uma opção"
+        Sleep -Seconds 1
+    
+        If ($Type_Name -eq 1) {
+            $Novo_Nome = Read-Host "Qual será o novo nome do arquivo? "
+            ForEach ($Arquivo in $Arquivos) {
+                Rename-Item -Path $Arquivo.FullName -NewName $Novo_Nome
+
+            }
+        } ElseIf ($Type_Name -eq 2) {
+            $Prefixo = Read-Host "Qual prefixo deseja adicionar ao nome do arquivo? "
+            $Novo_Nome = $Prefixo + $Arquivo.name
+            ForEach ($Arquivo in $Arquivos) {
+                Rename-Item -Path $Arquivo.FullName -NewName $Novo_Nome
+        
+            }
+        } ElseIf ($Type_Name -eq 3) {
+            $Sufixo = Read-Host "Qual sufixo deseja adicionar ao nome do arquivo? "
+            $Novo_Nome = $Arquivo.Name + $Sufixo
+            ForEach ($Arquivo in $Arquivos) {
+            
+                Rename-Item -Path $Arquivo.FullName -NewName $Novo_Nome
+
+            }
+        } Else {
+            Write-Host "A opção desejada não existe!" -ForegroundColor Red -BackgroundColor Black
+            $Resposta = Read-Host "Deseja tentar novamente? Sim/Não" 
+
+        } 
+    } While($Resposta -eq "Sim")
 }
 
-Write-Host "Operação finalizada." -ForegroundColor Red -BackgroundColor Black
+Write-Host "Operação finalizada!"
+
+
 
 #===================================================================
-#Exercico 17: 
+#Exercico 17:
 #Criando CSV
 
 #$LocalCsv = 'C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Exercicios PowerShell ChatGPT'
