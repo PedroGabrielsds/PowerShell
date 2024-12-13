@@ -50,8 +50,8 @@ If(-not (Test-Path $Destino)){
     
 
 } Else {
-    $Arquivos = Get-ChildItem -Path $Destino -File
     Do {
+        $Arquivos = Get-ChildItem -Path $Destino -File
         Write-Host "Renomear por completo     [1]" -ForegroundColor Gray -BackgroundColor Black
         Write-Host "Adicionar somente prefixo [2]" -ForegroundColor Gray -BackgroundColor Black
         Write-Host "Adicionar somente sufixo  [3]" -ForegroundColor Gray -BackgroundColor Black
@@ -66,8 +66,8 @@ If(-not (Test-Path $Destino)){
             }
         } ElseIf ($Type_Name -eq 2) {
             $Prefixo = Read-Host "Qual prefixo deseja adicionar ao nome do arquivo? "
-            $Novo_Nome = $Prefixo + $Arquivo.name
             ForEach ($Arquivo in $Arquivos) {
+                $Novo_Nome = $Prefixo + $Arquivo.name
                 Rename-Item -Path $Arquivo.FullName -NewName $Novo_Nome
         
             }
@@ -81,12 +81,11 @@ If(-not (Test-Path $Destino)){
             }
         } Else {
             Write-Host "A opção desejada não existe!" -ForegroundColor Red -BackgroundColor Black
-            $Resposta = Read-Host "Deseja tentar novamente? Sim/Não" 
+            $Resposta = Read-Host "Deseja tentar novamente? Sim/Não"
 
         } 
     } While($Resposta -eq "Sim")
 }
-
 Write-Host "Operação finalizada!"
 
 
