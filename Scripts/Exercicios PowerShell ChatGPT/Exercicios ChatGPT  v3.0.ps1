@@ -42,7 +42,7 @@ Sleep -Seconds 2
 
 cls
 
-$Destino = Read-Host "Em qual diretório está os arquivos que deseja renomear? "        
+$Destino = Read-Host "Em qual diretório está os arquivos que deseja renomear? "
 
 If(-not (Test-Path $Destino)){
 
