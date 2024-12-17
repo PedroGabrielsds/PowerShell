@@ -30,65 +30,6 @@
 #Exercicio 16:
 #Renomeando
 
-cls
-
-$Nome = Read-Host "Qual é o seu nome? "
-
-$Mensagem = "Seja bem vindo $Nome!"
-
-$Mensagem
-
-Sleep -Seconds 2
-
-cls
-
-$Destino = Read-Host "Em qual diretório está os arquivos que deseja renomear? "
-
-If(-not (Test-Path $Destino)){
-
-    Write-Host "O diretório digitado não existe!" -ForegroundColor Red -BackgroundColor Black
-    
-
-} Else {
-    Do {
-        $Arquivos = Get-ChildItem -Path $Destino -File
-        Write-Host "Renomear por completo     [1]" -ForegroundColor Gray -BackgroundColor Black
-        Write-Host "Adicionar somente prefixo [2]" -ForegroundColor Gray -BackgroundColor Black
-        Write-Host "Adicionar somente sufixo  [3]" -ForegroundColor Gray -BackgroundColor Black
-        $Type_Name = Read-Host "Digite uma opção"
-        Sleep -Seconds 1
-    
-        If ($Type_Name -eq 1) {
-            $Novo_Nome = Read-Host "Qual será o novo nome do arquivo? "
-            ForEach ($Arquivo in $Arquivos) {
-                Rename-Item -Path $Arquivo.FullName -NewName $Novo_Nome
-
-            }
-        } ElseIf ($Type_Name -eq 2) {
-            $Prefixo = Read-Host "Qual prefixo deseja adicionar ao nome do arquivo? "
-            ForEach ($Arquivo in $Arquivos) {
-                $Novo_Nome = $Prefixo + $Arquivo.name
-                Rename-Item -Path $Arquivo.FullName -NewName $Novo_Nome
-        
-            }
-        } ElseIf ($Type_Name -eq 3) {
-            $Sufixo = Read-Host "Qual sufixo deseja adicionar ao nome do arquivo? "
-            $Novo_Nome = $Arquivo.Name + $Sufixo
-            ForEach ($Arquivo in $Arquivos) {
-            
-                Rename-Item -Path $Arquivo.FullName -NewName $Novo_Nome
-
-            }
-        } Else {
-            Write-Host "A opção desejada não existe!" -ForegroundColor Red -BackgroundColor Black
-            $Resposta = Read-Host "Deseja tentar novamente? Sim/Não"
-
-        } 
-    } While($Resposta -eq "Sim")
-}
-Write-Host "Operação finalizada!"
-
-
 
 #===================================================================
 #Exercico 17:
