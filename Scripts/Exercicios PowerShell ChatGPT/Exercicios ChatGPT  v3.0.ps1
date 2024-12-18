@@ -29,7 +29,35 @@
 #===================================================================
 #Exercicio 16:
 #Renomeando
+Write-Host "|======================================|" -ForegroundColor Black -BackgroundColor White
+Write-Host "| Bem vindo ao renomeador de arquivos! |" -ForegroundColor Black -BackgroundColor White
+Write-Host "|======================================|" -ForegroundColor Black -BackgroundColor White
 
+cls
+
+$Diretorio = Read-Host "Em qual diretório se encontra os arquivos que deseja renomear:  "
+
+
+Cls
+
+Write-Host "Opções para renomear! "
+Write-Host "Renomear por completo [1]"
+Write-Host "Adicionar um Prefixo  [2]"
+Write-Host "Adicionar um Sufixo   [3]"
+$Resposta_1 = Read-Host "Escolha uma opção para renomear: "
+
+If ($Resposta_1 -eq 1) {
+    $Novo_Nome = Read-Host "Qual será o novo nome do arquivo? "
+
+    
+} ElseIf ($Resposta_1 -eq 2) {
+    $Prefixo = Read-Host "Digite o prefixo que deseja adicionar: "
+    
+
+} ElseIf ($Resposta_1 -eq 3) {
+    $Sufixo = Read-Host "Digite o sufixo que deseja adicionar: "
+
+}
 
 #===================================================================
 #Exercico 17:
