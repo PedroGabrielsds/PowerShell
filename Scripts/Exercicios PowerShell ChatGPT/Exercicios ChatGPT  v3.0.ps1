@@ -37,6 +37,7 @@ cls
 
 $Diretorio = Read-Host "Em qual diretório se encontra os arquivos que deseja renomear:  "
 
+$Arquivo = Get-ChildItem -Path $Diretorio -Filter "*.txt"
 
 Cls
 
@@ -48,15 +49,23 @@ $Resposta_1 = Read-Host "Escolha uma opção para renomear: "
 
 If ($Resposta_1 -eq 1) {
     $Novo_Nome = Read-Host "Qual será o novo nome do arquivo? "
-
+    Try{
+        Rename-Item -Path $Arquivo -NewName $Novo_Nome
+    
+    } Catch {
+        Write-Host "Erro ao renomear arquivo! " -ForegroundColor Red -BackgroundColor Black
+        Exit
+    }
+    Write-Host "Arquivo renomeado com sucesso! " -ForegroundColor Green -BackgroundColor Black
     
 } ElseIf ($Resposta_1 -eq 2) {
     $Prefixo = Read-Host "Digite o prefixo que deseja adicionar: "
+    Exit
     
 
 } ElseIf ($Resposta_1 -eq 3) {
     $Sufixo = Read-Host "Digite o sufixo que deseja adicionar: "
-
+    Exit
 }
 
 #===================================================================
