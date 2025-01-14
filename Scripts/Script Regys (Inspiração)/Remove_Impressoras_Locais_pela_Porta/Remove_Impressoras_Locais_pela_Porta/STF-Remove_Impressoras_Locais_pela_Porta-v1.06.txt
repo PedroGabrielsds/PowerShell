@@ -1,0 +1,111 @@
+O script procura impressoras de rede que foram isntaladas como impressoras locais.
+Ele irá remover as impressoras locais que tem portas começando com os prefixos abaixo:
+
+
+Versão 1.0
+-------------
+Prefixos: 
+- "//10.112.20.142"
+- "10..112."
+- "10.8."
+- "10.11"
+- "IP_10.10"
+- "IP_10.11"
+- "IP_10.12"
+
+Distribuído somente pra máquinas ETI
+
+Versão 1.01
+-------------
+Incluído o prefixo
+- "WSD"
+
+Distribuído somente pra máquinas ETI
+
+Versão 1.02
+-------------
+Excluído o prefixo
+- "WSD"
+Incluído os prefixos
+- "WSD-0"
+- "WSD-1"
+- "imp07"
+- "X_10_122_41"
+
+Log do script com nome da máquina
+Distribuir para todo o Anexo I
+
+
+Versão 1.03
+-------------
+Incluído os prefixos
+- "imp08"
+- "imp09"
+- "WSD-2"
+- "WSD-3"
+- "WSD-4"
+
+Distribuir para todo o Anexo I
+
+
+Versão 1.04
+-------------
+Excluído o prefixo
+- "imp07"
+- "imp08"
+- "imp09"
+Incluído os prefixos
+- "imp0"
+- "imp1"
+- "WSD-5"
+- "WSD-6"
+- "WSD-7"
+- "WSD-8"
+- "WSD-9"
+- "WSD-a"
+
+Distribuir para todo o Anexo I
+
+
+Versão 1.05
+-------------
+Excluído o prefixo
+- "WSD-0"
+- "WSD-1"
+- "WSD-2"
+- "WSD-3"
+- "WSD-4"
+- "WSD-5"
+- "WSD-6"
+- "WSD-7"
+- "WSD-8"
+- "WSD-9"
+- "WSD-a"
+- "imp0"
+- "imp1"
+Incluído os prefixos
+- "imp"
+- "WSD"
+- "\\ETU087621"
+- "10.11"
+- "VMWPORT"
+
+Distribuir para todo o Anexo I
+
+
+Versão 1.06
+-------------
+Excluído o prefixo
+- "VMWPORT"
+- "\\ETU087621"
+
+Incluído os prefixos
+- "\\ETU0"
+
+Distribuir para:
+- Anexo I
+- Térreo e Subsolo Sede
+- Térreo e Subsolo Anexo 2
+- Anexo 2B (Igrejinha)
+- 514N
+
