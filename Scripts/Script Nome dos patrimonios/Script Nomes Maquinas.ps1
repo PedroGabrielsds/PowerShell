@@ -3,11 +3,13 @@
 #Variaveis
 $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 
-$Endereco = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script Nome dos patrimonios\Maquinas_Identificadas.txt"
+$Entrada = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script Nome dos patrimonios\Maquinas Doação no AD\Patrimonios maquinas doação.txt"
+
+$Saida = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script Nome dos patrimonios\Maquinas Doação no AD\Maquinas identificadas doaçao ad.txt"
 
 $Computadores = @()
  
-$Patrimonios = Get-Content "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script Nome dos patrimonios\Maquinas Ja Formatadas.txt"
+$Patrimonios = Get-Content $Entrada
 
 #==============================================================
 #Importando Modulo AD
@@ -30,7 +32,7 @@ ForEach($Computador in $Computadores){
     ForEach($Patrimonio in $Patrimonios){
         
         If($Computador -Imatch $Patrimonio){
-            Add-Content -path $Endereco -Value "$($Computador.CN)"
+            Add-Content -path $saida -Value "$($Computador.CN)"
             
         }
     }
