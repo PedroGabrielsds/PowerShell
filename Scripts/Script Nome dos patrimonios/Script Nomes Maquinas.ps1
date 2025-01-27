@@ -30,11 +30,11 @@ ForEach($Maquina in $MaquinasAD){
 #InicioAlgoritmo
 
 ForEach($Computador in $Computadores){
-
+    
     ForEach($Patrimonio in $Patrimonios){
         
-        #Write-Host "$($Patrimonio) X $($Computador.cn)"
-        If($Computador -contains $Patrimonio){
+        Write-Host "$($Patrimonio) X $($Computador.cn)"
+        If($Computador.cn -contains $Patrimonio){
             #Add-Content -path $saida -Value "$($Computador.CN)"
             Write-Host $($Computador.CN)
         }
