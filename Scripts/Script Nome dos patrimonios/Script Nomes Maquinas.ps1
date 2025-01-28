@@ -9,7 +9,9 @@ $Saida = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scr
 
 $Computadores = @()
 
-Add-Content -Path "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script Nome dos patrimonios\Patrimonios_AD.txt" -Value $($Computadores)
+Add-Content -Path "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script Nome dos patrimonios\Patrimonios_AD.txt" -Value $($Computadores.CN)
+
+$ComputadoresAD = Get-Content "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script Nome dos patrimonios\Patrimonios_AD.txt"
 
 $Patrimonios = Get-Content $Entrada
 
@@ -22,7 +24,7 @@ $MaquinasAD = Get-ADComputer -Filter * -SearchBase $OU -Properties CN
 
 ForEach($Maquina in $MaquinasAD){
     $Computadores += [PSCustomObject] @{
-        CN = ($Maquina.CN) 
+        CN = $($Maquina.CN)
         #-Split ',',1)[0]
     
     }
@@ -31,14 +33,15 @@ ForEach($Maquina in $MaquinasAD){
 #===============================================================
 #InicioAlgoritmo
 
-ForEach($Computador in $Computadores){
+ForEach($Computador in $ComputadoresAD){
     
     ForEach($Patrimonio in $Patrimonios){
         
-        Write-Host "$($Patrimonio) X $($Computador.cn)"
-        If($Computador.cn -contains $Patrimonio){
-            #Add-Content -path $saida -Value "$($Computador.CN)"
-            Write-Host $($Computador.CN)
+        #Write-Host "$($Patrimonio) X $($Computador)"
+        If($Computador -match $Patrimonio){
+            Add-Content -path $saida -Value "$($Computador)"
+            #Write-Host "$($Computador)" -ForegroundColor Green -BackgroundColor Black
+            
         }
     }
 }
