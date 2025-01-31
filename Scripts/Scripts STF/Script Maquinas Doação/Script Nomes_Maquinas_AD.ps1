@@ -39,8 +39,8 @@ ForEach($Computador in $ComputadoresAD){
         
         #Write-Host "$($Patrimonio) X $($Computador)"
         If($Computador -match $Patrimonio){
-            Add-Content -path $saida -Value "$($Computador)"
-            #Write-Host "$($Computador)" -ForegroundColor Green -BackgroundColor Black
+            #Add-Content -path $saida -Value "$($Computador)"
+            Write-Host "$($Computador)" -ForegroundColor Green -BackgroundColor Black
             
         }
     }

@@ -91,7 +91,7 @@ ForEach ($Maquina in $Computadores) {
             $NomeCerto_OUErrada = "$($Maquina.CN);$($Maquina.OU);Somente OU Incorreta"
             Add-Content -Path $Caminho -value $NomeCerto_OUErrada
             break  
-        }           
+        }          
     }
     If($Dentro_Padrao -eq $true){
         #Write-host $NoPadrao

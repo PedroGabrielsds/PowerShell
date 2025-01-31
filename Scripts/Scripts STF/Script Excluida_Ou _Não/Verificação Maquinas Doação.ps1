@@ -14,31 +14,31 @@ $Maquinas_Identificadas_AD = Get-Content -Path $Endereço_Maquinas_Identificadas
 
 $Maquinas_Doadas = Get-Content -Path $Endereço_Maquinas_Doadas
 
-$Teste1 = Get-Content -Path 
+$Teste1 = Get-Content -Path "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Excluida_Ou _Não\Teste1.txt"
 
-$Teste2 = 
+$Teste2 = Get-Content -Path "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Excluida_Ou _Não\Teste2.txt"
 
 #==============================================================
 #InicioAlgoritmo
 
-ForEach($Maquina_AD in $Maquinas_Identificadas_AD){
+ForEach($Teste in $Teste1){
 
-    ForEach($Maquina_Doada in $Maquinas_Doadas){
-
-        #Write-Host "$Maquina_AD X $Maquina_Doada"
-        If($Maquina_Doada - $Maquina_AD){
-
+    ForEach($Test in $Teste2){
+        
+        Write-Host "$($Teste) X $($Test)"
+        If($Teste.Contains($Test)){
+            
             #Add-Content -Path $Maquinas_Encontrada -Value "$Maquina_Doada = $Maquina_AD - Falta Excluir do AD"
             #[num]$Encontrou = 1
-            Write-Host "$Maquina_Doada = $Maquina_AD - Falta Excluir do AD" -ForegroundColor Red -BackgroundColor Black
-            Continue
-        
+            Write-Host "A maquina $($Test) contém o Patrimonio $($Teste)" -ForegroundColor Green -BackgroundColor Black
+            
         }Else{
-
+           
+           #Write-Host "A maquina $($Test) não contém o Patrimonio $($Teste)" -ForegroundColor Red -BackgroundColor Black
            #Write-Host "$Maquina_Doada = $Maquina_AD - Foi Excluida" -ForegroundColor Green -BackgroundColor Black
         }
     }
-    Write-Host "==================================="
+    Write-Host "=========================="
 }
 
 
