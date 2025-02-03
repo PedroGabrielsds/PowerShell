@@ -26,11 +26,11 @@ ForEach($Teste in $Teste1){
     ForEach($Test in $Teste2){
         
         Write-Host "$($Teste) X $($Test)"
-        If($Teste.Contains($Test)){
+        If($Teste -like "*$Test*"){
             
             #Add-Content -Path $Maquinas_Encontrada -Value "$Maquina_Doada = $Maquina_AD - Falta Excluir do AD"
-            #[num]$Encontrou = 1
-            Write-Host "A maquina $($Test) contém o Patrimonio $($Teste)" -ForegroundColor Green -BackgroundColor Black
+            
+            Write-Host "A maquina $($Teste) contém o Patrimonio $($Test)" -ForegroundColor Green -BackgroundColor Black
             
         }Else{
            
@@ -40,15 +40,6 @@ ForEach($Teste in $Teste1){
     }
     Write-Host "=========================="
 }
-
-
-
-
-
-
-
-
-
 
 
 #==============================================================

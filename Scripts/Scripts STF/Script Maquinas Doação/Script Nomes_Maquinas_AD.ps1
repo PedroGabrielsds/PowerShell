@@ -39,9 +39,15 @@ ForEach($Computador in $ComputadoresAD){
         
         #Write-Host "$($Patrimonio) X $($Computador)"
         If($Computador -match $Patrimonio){
-            #Add-Content -path $saida -Value "$($Computador)"
-            Write-Host "$($Computador)" -ForegroundColor Green -BackgroundColor Black
             
+            If($Computador -like "*VM"){
+                Write-Host "Maquina $($Computador) não poder ser excluido do Active Directory"
+                
+            }Else{
+                #Add-Content -path $saida -Value "$($Computador)"
+                Write-Host "$($Computador)" -ForegroundColor Green -BackgroundColor Black
+            
+            }
         }
     }
 }
