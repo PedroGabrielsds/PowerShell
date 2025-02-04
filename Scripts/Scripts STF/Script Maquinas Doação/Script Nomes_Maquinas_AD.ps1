@@ -7,46 +7,54 @@ $Entrada = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\S
 
 $Saida = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_Identificadas.txt"
 
+$Patrimonios = Get-Content $Entrada
+
 $Computadores = @()
 
 Add-Content -Path "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script Nome dos patrimonios\Patrimonios_AD.txt" -Value $($Computadores.CN)
 
 $ComputadoresAD = Get-Content "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Script Nome dos patrimonios\Patrimonios_AD.txt"
 
-$Patrimonios = Get-Content $Entrada
-
 #==============================================================
 #Importando Modulo AD
 
-Import-Module ActiveDirectory
+Try{
+    Import-Module ActiveDirectory
+
+}Catch{
+    Write-Host "Erro ao importar o módulo Active Directory $_" -ForegroundColor Red -BackgroundColor Black
+
+}
 
 $MaquinasAD = Get-ADComputer -Filter * -SearchBase $OU -Properties CN
 
-ForEach($Maquina in $MaquinasAD){
-    $Computadores += [PSCustomObject] @{
-        CN = $($Maquina.CN)
-        #-Split ',',1)[0]
-    
+    ForEach($Maquina in $MaquinasAD){
+        $Computadores += [PSCustomObject] @{
+            CN = $($Maquina.CN)
+            #-Split ',',1)[0]
+        
+        }
     }
-}
 
 #===============================================================
 #InicioAlgoritmo
 
 ForEach($Computador in $ComputadoresAD){
-    
-    ForEach($Patrimonio in $Patrimonios){
         
+    ForEach($Patrimonio in $Patrimonios){
+            
         #Write-Host "$($Patrimonio) X $($Computador)"
         If($Computador -match $Patrimonio){
-            
+                
             If($Computador -like "*VM"){
-                Write-Host "Maquina $($Computador) não poder ser excluido do Active Directory"
+                
+                Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
                 
             }Else{
+
                 #Add-Content -path $saida -Value "$($Computador)"
                 Write-Host "$($Computador)" -ForegroundColor Green -BackgroundColor Black
-            
+                
             }
         }
     }
