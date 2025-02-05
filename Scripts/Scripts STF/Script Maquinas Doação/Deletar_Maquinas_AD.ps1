@@ -16,7 +16,6 @@ $Computadores = @()
 
 Try{
     Import-Module ActiveDirectory
-    Write-Host "Módulo AD foi importado com sucesso!" -ForegroundColor Green -BackgroundColor Black
 
 }Catch{
     Write-Host "Erro ao importar o módulo Active Directory $_" -ForegroundColor Red -BackgroundColor Black
