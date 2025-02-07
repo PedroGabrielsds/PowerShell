@@ -1,58 +1,53 @@
 ﻿#Script Nomes dos Patrimonios
 #=============================================================
 #Variaveis
-$OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 
 $Entrada = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_Doacao.txt"
 
-$Saida = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_Identificadas.txt"
-
 $Patrimonios = Get-Content $Entrada
 
-$Computadores = @()
+$Endereco_Maquinas_Encontradas = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_Encontradas.txt"
 
-#==============================================================
-#Importando Modulo AD
+$Endereco_Maquinas_Nao_Encontradas = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_Nao_Encontradas.txt"
 
-Try{
-    Import-Module ActiveDirectory
-
-}Catch{
-    Write-Host "Erro ao importar o módulo Active Directory $_" -ForegroundColor Red -BackgroundColor Black
-
-}
-
-$MaquinasAD = Get-ADComputer -Filter * -SearchBase $OU -Properties CN
-
-    ForEach($Maquina in $MaquinasAD){
-        $Computadores += [PSCustomObject] @{
-            CN = $($Maquina.CN)
-            #-Split ',',1)[0]
-        
-        }
-    }
+$Endereco_Maquinas_VM = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_VM.txt"
 
 #===============================================================
 #InicioAlgoritmo
 
-ForEach($Computador in $ComputadoresAD){
+ForEach ($Patrimonio in $Patrimonios) {
+ 
+    $Maquinas = Get-ADComputer -Filter "Name -like '*$Patrimonio*'" -Properties CN
+    $Maquinas = ($($Maquinas) -split ',',2)[0]
+    
+    
+    If ($Maquinas.Count -gt 0) {
         
-    ForEach($Patrimonio in $Patrimonios){
+        ForEach ($Maquina in $Maquinas) {
             
-        #Write-Host "$($Patrimonio) X $($Computador)"
-        If($Computador -match $Patrimonio){
-                
-            If($Computador -like "*VM"){
-                
-                Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
-                
+            If($Maquina -like "*VM"){
+     
+                #Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
+                Add-Content -Path $Endereco_Maquinas_VM -Value ($($Maquinas) -split '=',2)[1]
+     
             }Else{
 
-                #Add-Content -path $saida -Value "$($Computador)"
-                Write-Host "$($Computador)" -ForegroundColor Green -BackgroundColor Black
-                
+                Add-Content -path $Endereco_Maquinas_Encontradas -value ($($Maquinas) -split '=',2)[1]
+                #Write-Host ($($Maquinas) -split '=',2)[1] -ForegroundColor Green -BackgroundColor Black   
+    
             }
         }
+
+    } Else {
+        #Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
+        #Write-Host $Patrimonio -ForegroundColor Red -BackgroundColor Black
+        
     }
 }
+
+               
+
+       
+    
+
 

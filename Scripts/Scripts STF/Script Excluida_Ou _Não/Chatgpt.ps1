@@ -1,5 +1,5 @@
 ﻿# Caminho do arquivo de entrada com os patrimonios
-$arquivoPatrimonios = "C:\caminho\para\patrimonios.txt"
+$arquivoPatrimonios = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_Doacao.txt"
 
 # Caminho dos arquivos de saída
 $arquivoMaquinasEncontradas = "C:\caminho\para\maquinas_encontradas.txt"
@@ -21,10 +21,13 @@ foreach ($patrimonio in $patrimonios) {
         # Se encontrar máquinas, adicionar os nomes delas à lista de máquinas encontradas
         foreach ($maquina in $maquinas) {
             $maquinasEncontradas += $maquina.Name
+            
         }
     } else {
-        # Se não encontrar nenhuma máquina, adicionar o patrimônio à lista de patrimonios não encontrados
+        #Se não encontrar nenhuma máquina, adicionar o patrimônio à lista de patrimonios não encontrados
         $patrimoniosNaoEncontrados += $patrimonio
+        
+        
     }
 }
 
