@@ -14,15 +14,14 @@ $Endereco_Maquinas_Nao_Encontradas = "C:\Users\g311011\Desktop\Pedro Gabriel Sil
 
 $Endereco_Maquinas_VM = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_VM.txt"
 
-$LogFile = 'C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Log\Log_Excluir_Maquinas_AD.log'
+$LogFile = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Log\Log-Deletar_Maquinas_AD.log"
 
-Function Escreve_Log {
+Function Write-log {
     Param(
-        [String]$Message,
-        [String]$LogLevel = "INFO"
+        [String]$Message
 
     )
-        $Message = "(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - [$LogLevel] - $Message"
+        $Message = "(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $Message"
         $Message | Out-File -Append -FilePath $LogFile
 
 }
@@ -34,6 +33,7 @@ Function Escreve_Log {
 #|  3º Passo: Exclui as maquinas identificadas do Active Directory      |                                                               
 #|                                                                      |
 #|----------------------------------------------------------------------|
+#
 
 #===============================================================
 #InicioAlgoritmo
@@ -46,7 +46,7 @@ ForEach ($Patrimonio in $Patrimonios) {
         $Maquinas = Get-ADComputer -Filter "Name -like '*$Patrimonio*'" -Properties CN
     
     } Catch {
-
+     
         Write-log "Não foi possivel buscar as maquinas no AD" 
     
     }
