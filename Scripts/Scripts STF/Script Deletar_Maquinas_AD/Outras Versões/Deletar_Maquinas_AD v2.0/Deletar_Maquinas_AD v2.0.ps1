@@ -10,17 +10,17 @@ $Entrada = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\S
 
 $Patrimonios = Get-Content $Entrada
 
-
+$File_MaquinasAD = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Deletar_Maquinas_AD v2.0\MaquinasAD.txt"
 
 
 #|----------------------------------------------------------------------|
 #|                         Passos do Script                             |
 #|  1º Passo: Importa o Módulo do Active Directory                      |               
-#|  2º Passo: Tenta identificar máquinas com os patrimônios da planilha
-
- |            #Tenta identificar máquinas com os patrimônios da planilha
-#|  3º Passo: Verifica se existem máquinas VM na lista                  |                       
-#|  4º Passo: Exclui as maquinas identificadas do Active Directory      |
+#|  2º Passo: Adiciona todas máquinas do AD em um TXT                   |
+#|  3º Passo: 
+#|  4º Passo: Tenta identificar máquinas com os patrimônios da planilha |
+#|  º Passo: Verifica se existem máquinas VM na lista                   |                       
+#|  º Passo: Exclui as maquinas identificadas do Active Directory       |
 #|                                                                      |
 #|----------------------------------------------------------------------|
 
@@ -39,12 +39,13 @@ Try {
 #===============================================================
 #InicioAlgoritmo
 
-#2º Passo - Adiciona todas máquinas do AD em uma variável: 
+#2º Passo - Adiciona todas máquinas do AD em um txt: 
 Try {
     $MaquinasAD = Get-ADComputer -Filter * -SearchBase $OU -Properties CN
     ForEach ($Maquina in $MaquinasAD) {
 
-        $Computadores += $($Maquina.CN)
+        Add-content -Path $File_MaquinasAD -Value $($Maquina.CN)
+        
     }
 
 } Catch {
@@ -56,13 +57,22 @@ Try {
 
 
 #3º Passo - Identificar máquinas com os patrimônios da planilha:
+ForEach ($Patrimonio in $Patrimonios) {
+
+    Get-Content $File_MaquinasAD | Where-Object {$_ -like "*$Patrimonio*"}
+
+}
+
+
 ForEach ($Computador in $Computadores) {
 
     ForEach ($Patrimonio in $Patrimonios) {
 
         If ($Computador -match $Patrimonio){
-            Write-Host $Computador
+            Write-Host $Computador -ForegroundColor Green -BackgroundColor Black
     
+        }Else {
+            Write-Host $Patrimonio -ForegroundColor Red -BackgroundColor Black
         }
     }
 }

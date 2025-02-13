@@ -4,21 +4,16 @@
 
 $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 
-$Computadores = @()
-
-$Entrada = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Maquinas_Doacao.txt"
+$Entrada = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Outras Versões\Deletar_Maquinas_AD v2.0\Maquinas_Doacao.txt"
 
 $Patrimonios = Get-Content $Entrada
 
-$File_MaquinasAD = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Deletar_Maquinas_AD v2.0\MaquinasAD.txt"
-
-
-
+$File_MaquinasAD = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Outras Versões\Deletar_Maquinas_AD v2.0\MaquinasAD.txt"
 
 #|----------------------------------------------------------------------|
 #|                         Passos do Script                             |
 #|  1º Passo: Importa o Módulo do Active Directory                      |               
-#|  2º Passo: Adiciona todas máquinas do AD em um TXT
+#|  2º Passo: Adiciona todas máquinas do AD em um TXT                   |
 #|  3º Passo: 
 #|  4º Passo: Tenta identificar máquinas com os patrimônios da planilha |
 #|  º Passo: Verifica se existem máquinas VM na lista                   |                       
@@ -56,30 +51,32 @@ Try {
 }
 
 
-
-
 #3º Passo - Identificar máquinas com os patrimônios da planilha:
+
+$All_MaquinasAD = Get-Content $File_MaquinasAD
+
 ForEach ($Patrimonio in $Patrimonios) {
+   
+    $Encontrada = $false
 
-    Get-Content $File_MaquinasAD | Where-Object {$_ -like "*$Patrimonio*"}
+    ForEach ($Maquina_AD in $All_MaquinasAD) {
+     write-host "$Patrimonio x $Maquina_AD" 
 
-}
-
-
-ForEach ($Computador in $Computadores) {
-
-    ForEach ($Patrimonio in $Patrimonios) {
-
-        If ($Computador -match $Patrimonio){
-            Write-Host $Computador -ForegroundColor Green -BackgroundColor Black
-    
-        }Else {
-            Write-Host $Patrimonio -ForegroundColor Red -BackgroundColor Black
+        If ($Maquina_AD -like "*$Patrimonio*") {
+            $Encontrada = $true
+            Break
+            
+        
         }
     }
+    If ($Encontrada -eq $true) {
+        #Write-Host $Maquina_AD -ForegroundColor Green -BackgroundColor Black
+    
+    } Else {
+        #Write-Host $Patrimonio -ForegroundColor Red -BackgroundColor Black
+    
+    }
 }
-
-
 
 #º Passo: Exclui as maquinas identificadas do Active Directory 
 

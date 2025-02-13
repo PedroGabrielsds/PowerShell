@@ -2,28 +2,27 @@
 #=============================================================
 #Variaveis
 
-$Entrada = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_Doacao.txt"
+$Entrada = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Maquinas_Doacao.txt"
 
 $Patrimonios = Get-Content $Entrada
 
-$Endereco_Maquinas_Encontradas = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_Encontradas.txt"
+$Endereco_Maquinas_Encontradas = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Maquinas_Encontradas.txt"
 
 $Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas
 
-$Endereco_Maquinas_Nao_Encontradas = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_Nao_Encontradas.txt"
+$LogFile = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Log\Log de Teste.log"
 
-$Endereco_Maquinas_VM = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Maquinas Doação\Maquinas_VM.txt"
-
-$LogFile = "C:\Users\g311011\Desktop\Pedro Gabriel Silva dos Santos\PowerShell\Scripts\Scripts STF\Script Deletar_Maquinas_AD\Log\Log-Deletar_Maquinas_AD.log"
-
-Function Write-log {
+Function Write-Log {
     Param(
         [String]$Message
-
     )
-        $Message = "(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $Message"
-        $Message | Out-File -Append -FilePath $LogFile
-
+    Try {
+        $Message = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $Message"
+        $Message | Out-File -Append -FilePath $LogFile -Encoding UTF8 -ErrorAction Stop
+    }
+    Catch {
+        Write-Host "Erro ao gravar no log: $_"
+    }
 }
 
 #|----------------------------------------------------------------------|
@@ -33,7 +32,6 @@ Function Write-log {
 #|  3º Passo: Exclui as maquinas identificadas do Active Directory      |                                                               
 #|                                                                      |
 #|----------------------------------------------------------------------|
-#
 
 #===============================================================
 #InicioAlgoritmo
@@ -47,7 +45,7 @@ ForEach ($Patrimonio in $Patrimonios) {
     
     } Catch {
      
-        Write-log "Não foi possivel buscar as maquinas no AD" 
+        Write-log -Message "Não foi possivel buscar as maquinas no AD"
     
     }
 
@@ -60,24 +58,27 @@ ForEach ($Patrimonio in $Patrimonios) {
             #2º Passo: Verifica se existem máquinas VM na lista
             If($Maquina -like "*VM"){
      
-                Write-Log "Maquina $($Computador) não pode ser excluido do Active Directory"
+                #Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
                 #Add-Content -Path $Endereco_Maquinas_VM -Value ($($Maquinas) -split '=',2)[1]
+                Write-log -Message "Maquina $($Computador) não pode ser excluido do Active Directory"
      
             }Else{
                 
                 #Add-Content -path $Endereco_Maquinas_Encontradas -value ($($Maquinas) -split '=',2)[1]
-                Write-Log ($($Maquinas) -split '=',2)[1] -ForegroundColor Green -BackgroundColor Black  
+                #Write-Host ($($Maquina) -split '=',2)[1] -ForegroundColor Green -BackgroundColor Black 
+                Write-log -Message ($($Maquinas) -split '=',2)[1]
                 
             }
         }
     } Else {
-        Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
+        #Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
+        #Write-Host $Patrimonio
+        Write-log -Message "$Patrimonio"
         
     }
 }
 
-#3º Passo: Exclui as maquinas identificadas do Active Directory 
-
+#3º Passo: Exclui as maquinas identificadas do Active Directory
 ForEach ($Maquina_Encontrada in $Maquinas_Encontradas) {
 
     Try {
