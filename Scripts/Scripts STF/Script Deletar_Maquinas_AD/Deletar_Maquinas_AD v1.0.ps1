@@ -87,7 +87,7 @@ ForEach ($Maquina_Encontrada in $Maquinas_Encontradas) {
 
     } Catch {
 
-        Write-Log "Não foi possivel excluir $($Maquina_AD)"
+        Write-Log "Não foi possivel excluir a máquina $($Maquina_Encontrada) do Active Directory"
         
     }
 }
