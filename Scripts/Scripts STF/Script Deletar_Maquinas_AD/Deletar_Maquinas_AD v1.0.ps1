@@ -56,13 +56,13 @@ ForEach ($Patrimonio in $Patrimonios) {
         ForEach ($Maquina in $Maquinas) {
 
             #2º Passo: Verifica se existem máquinas VM na lista
-            If($Maquina -like "*VM"){
+            If ($Maquina -like "*VM") {
      
                 #Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
                 #Add-Content -Path $Endereco_Maquinas_VM -Value ($($Maquinas) -split '=',2)[1]
                 Write-log -Message "Maquina $($Computador) não pode ser excluido do Active Directory"
      
-            }Else{
+            } Else {
                 
                 #Add-Content -path $Endereco_Maquinas_Encontradas -value ($($Maquinas) -split '=',2)[1]
                 #Write-Host ($($Maquina) -split '=',2)[1] -ForegroundColor Green -BackgroundColor Black 
