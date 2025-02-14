@@ -74,15 +74,21 @@ begin {
 
   # Variáveis utilizadas pela função Write-Log para criar um arquivo de LOG
   # compatível com o CMTRACE e salvar o logo na rede
-  $global:DataLog = (Get-Date).ToString("yyyy.MM.dd-HH.mm.ss")
+  $global:DataLog = (Get-Date).ToString("yyyy.MM.dd")
   $global:configLogDir = 'C:\Temp\LOGs'
-  $global:configLogName = "STF-Modelo_Script-($DataLog).log"
+  $global:configLogName = "STF-Maquinas_A_Remover_Do_AD-($DataLog).log"
   $global:configLogAppend = $true
   $global:configLogMaxSize = 10
   $global:configLogMaxHistory = 10
   $global:configLogWriteToHost = $True
   $global:configLogDebugMessage = $False
   $global:configLogStyle = 'CMTrace'
+
+  $Entrada = "$mainScriptRoot\Maquinas_Doacao.txt"
+
+  $Endereco_Maquinas_Encontradas = "$mainScriptRoot\Maquinas_Encontradas.txt"
+  $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"  # Substitua com o caminho da sua OU
+
   
   
   # ▲                                                         ▲ 
@@ -154,19 +160,85 @@ begin {
   # █  . . . . . . . . . . . . . . . . . . . . . . . . . . .  █
   # ▼                                                         ▼
  
-  # Você pode usar a vairável $FaseDoScript para identificar no LOG a Fase ou ETAPA do seu Script. 
-  # Isso ajuda na hora de verificar o LOG pra entender o que o script fez. 
-  # Sempre que iniciar uma nota Fase ou Etapa no seu Script, configure essa variável.
-  # Exemplos: 
-  #           [String]$FaseDoScript = 'Etapa 01'
-  #           [String]$FaseDoScript = 'Etapa 02'
-  #           [String]$FaseDoScript = 'Consulta AD'
-  #           [String]$FaseDoScript = 'Compara Dados'
-  #           [String]$FaseDoScript = 'Correção AD'
-  #           [String]$FaseDoScript = 'Consulta Servidor'
+    [String]$FaseDoScript = 'Lendo Arquivos TXT'
 
-  
-  
+    $Patrimonios = Get-Content $Entrada
+
+    #$Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas
+
+
+    #|----------------------------------------------------------------------|
+    #|                         Passos do Script                             |                     
+    #|  1º Passo: Tenta identificar máquinas com os patrimônios da planilha |                                                                    
+    #|  2º Passo: Verifica se existem máquinas VM na lista                  |
+    #|  3º Passo: Exclui as maquinas identificadas do Active Directory      |                                                               
+    #|                                                                      |
+    #|----------------------------------------------------------------------|
+
+#===============================================================
+#InicioAlgoritmo
+
+[String]$FaseDoScript = 'Buscar Maquinas no AD'
+
+Try {
+
+    $maquinas_ad = (Get-ADComputer -Filter * -SearchBase "$OU" -Properties CN).CN
+
+} Catch {
+    
+    Write-log -Message "Não foi possivel consultar o AD" -severity 3
+}
+
+ 
+[String]$FaseDoScript = 'Procurar patrimonio nas maquinas'
+
+#1º Passo: Identificar máquinas com os patrimônios da planilha
+ForEach ($Patrimonio in $Patrimonios) {
+
+    Try {
+        
+        #$Maquinas = (Get-ADComputer -Filter "Name -like '*$Patrimonio*'" -Properties CN).CN
+        $maquinas = $maquinas_ad | Where-Object { $_ -like "*$patrimonio*" }
+    
+    } Catch {
+     
+        Write-log -Message "Não foi possivel buscar as maquinas no AD" -severity 3
+    
+    }
+
+    
+    If ($Maquinas.Count -gt 0) {
+        
+        ForEach ($Maquina in $Maquinas) {
+
+
+            [String]$FaseDoScript = 'verificando maquinas VM'
+            #2º Passo: Verifica se existem máquinas VM na lista
+            If ($Maquina -like "*VM") {
+     
+                #Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
+                #Add-Content -Path $Endereco_Maquinas_VM -Value ($($Maquinas) -split '=',2)[1]
+                Write-log -Message "Maquina $($Maquina) não pode ser excluido do Active Directory" -severity 2
+     
+            } Else {
+                
+                #Add-Content -path $Endereco_Maquinas_Encontradas -value ($($Maquinas)
+                #Write-Host ($($Maquina) -split '=',2)[1] -ForegroundColor Green -BackgroundColor Black 
+                Write-log -Message "A maquina $($Maquina) Pode ser removida!"
+                
+            }
+        }
+    } Else {
+        #Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
+        #Write-Host $Patrimonio
+        Write-log -Message "Nenhuma maquina com o patrimonio $Patrimonio"
+        
+    }
+}
+
+
+
+
   
   
   # ▲                                                         ▲ 
