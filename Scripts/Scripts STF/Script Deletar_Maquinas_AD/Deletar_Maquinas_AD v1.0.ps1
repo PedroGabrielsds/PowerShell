@@ -16,12 +16,15 @@ Function Write-Log {
     Param(
         [String]$Message
     )
-    Try {
+    Try { 
+
         $Message = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $Message"
         $Message | Out-File -Append -FilePath $LogFile -Encoding UTF8 -ErrorAction Stop
-    }
-    Catch {
+
+    } Catch {
+
         Write-Host "Erro ao gravar no log: $_"
+
     }
 }
 
