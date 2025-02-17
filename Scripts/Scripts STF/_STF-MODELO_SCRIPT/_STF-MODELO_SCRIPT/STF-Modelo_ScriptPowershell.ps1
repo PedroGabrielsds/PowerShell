@@ -87,9 +87,7 @@ begin {
   $Entrada = "$mainScriptRoot\Maquinas_Doacao.txt"
   $Endereco_Maquinas_Encontradas = "$mainScriptRoot\Maquinas_Encontradas.txt"
   $Endereco_Maquinas_Nao_Encontradas = "$mainScriptRoot\Maquinas_Nao_Encontradas.txt"
-  $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"  
-
-  
+  $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
   
   # ▲                                                         ▲ 
   # █  . . . . . . . . . . . . . . . . . . . . . . . . . . .  █
