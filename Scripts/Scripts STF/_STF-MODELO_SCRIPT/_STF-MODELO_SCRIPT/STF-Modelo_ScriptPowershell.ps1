@@ -85,8 +85,8 @@ begin {
   $global:configLogStyle = 'CMTrace'
 
   $Entrada = "$mainScriptRoot\Maquinas_Doacao.txt"
-  $Endereco_Maquinas_Encontradas = "$mainScriptRoot\Maquinas_Encontradas.txt"
-  $Endereco_Maquinas_Nao_Encontradas = "$mainScriptRoot\Maquinas_Nao_Encontradas.txt"
+  $Endereco_Maquinas_Encontradas = ""
+  $Endereco_Maquinas_Nao_Encontradas = ""
   $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
   
   # ▲                                                         ▲ 
@@ -228,23 +228,6 @@ ForEach ($Patrimonio in $Patrimonios) {
     }
 }
 
-#3º Passo: Exclui as maquinas identificadas do Active Directory
-#$Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas
-
-#ForEach ($Maquina_Encontrada in $Maquinas_Encontradas) {
-
- #   Try {
-
-  #      Remove-ADComputer -Identity "$($Maquina_AD)"
-
-   # } Catch {
-
-    #    Write-Log "Não foi possivel excluir a máquina $($Maquina_Encontrada) $_"
-        
-    #}
-#}
-
-  
   
   # ▲                                                         ▲ 
   # █  . . . . . . . . . . . . . . . . . . . . . . . . . . .  █

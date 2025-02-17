@@ -34,7 +34,7 @@ Se o script utilizar algum arquivo de SAÍDA, especifique aqui no comentário
 
 Toda e qualquer alteração em PRODUÇÃO que o Script faça, deverá salvar o LOG das alterações no local apropriado na rede, para ficar disponível para auditoria.
 Para Scripts que só fazem consulta e não fazem alteração, os Logs podem ser salvos localmente.
-Em alguns casos, os Erros obtidos podem ser colocados em um log específico de erros e salvo na rede. 
+Em alguns casos, os Erros obtidos podem ser colocados em um log específico de erros e salvo na rede.
 
 .LINK
 
@@ -85,8 +85,8 @@ begin {
   $global:configLogStyle = 'CMTrace'
 
   $Entrada = "$mainScriptRoot\Maquinas_Doacao.txt"
-
-  $Endereco_Maquinas_Encontradas = "$mainScriptRoot\Maquinas_Encontradas.txt"
+  $Endereco_Maquinas_Encontradas = "$mainScriptRoot\Maquinas_Nao_Encontradas.txt"
+  $Endereco_Maquinas_Nao_Encontradas = "$mainScriptRoot\Maquinas_Nao_Encontradas.txt"
   $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 
   
@@ -164,9 +164,6 @@ begin {
 
     $Patrimonios = Get-Content $Entrada
 
-    #$Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas
-
-
     #|----------------------------------------------------------------------|
     #|                         Passos do Script                             |                     
     #|  1º Passo: Tenta identificar máquinas com os patrimônios da planilha |                                                                    
@@ -229,12 +226,15 @@ ForEach ($Patrimonio in $Patrimonios) {
             }
         }
     } Else {
-        #Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
+        Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
         #Write-Host $Patrimonio
         Write-log -Message "Nenhuma maquina com o patrimonio $Patrimonio"
         
     }
 }
+    #3º Passo: Exclui as maquinas identificadas do Active Directory
+
+    #$Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas
 
 
 
