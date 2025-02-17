@@ -85,9 +85,9 @@ begin {
   $global:configLogStyle = 'CMTrace'
 
   $Entrada = "$mainScriptRoot\Maquinas_Doacao.txt"
+
   $Endereco_Maquinas_Encontradas = "$mainScriptRoot\Maquinas_Encontradas.txt"
-  $Endereco_Maquinas_Nao_Encontradas = "$mainScriptRoot\Maquinas_Nao_Encontradas.txt"
-  $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"  
+  $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"  # Substitua com o caminho da sua OU
 
   
   
@@ -164,6 +164,9 @@ begin {
 
     $Patrimonios = Get-Content $Entrada
 
+    #$Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas
+
+
     #|----------------------------------------------------------------------|
     #|                         Passos do Script                             |                     
     #|  1º Passo: Tenta identificar máquinas com os patrimônios da planilha |                                                                    
@@ -203,10 +206,13 @@ ForEach ($Patrimonio in $Patrimonios) {
     
     }
 
+    
     If ($Maquinas.Count -gt 0) {
         
         ForEach ($Maquina in $Maquinas) {
 
+
+            [String]$FaseDoScript = 'verificando maquinas VM'
             #2º Passo: Verifica se existem máquinas VM na lista
             If ($Maquina -like "*VM") {
      
@@ -216,35 +222,22 @@ ForEach ($Patrimonio in $Patrimonios) {
      
             } Else {
                 
-                #Add-Content -path $Endereco_Maquinas_Encontradas -value $($Maquina)
-                #Write-Host ($($Maquina) -split '=',2)[1] -ForegroundColor Green -BackgroundColor Black
+                #Add-Content -path $Endereco_Maquinas_Encontradas -value ($($Maquinas)
+                #Write-Host ($($Maquina) -split '=',2)[1] -ForegroundColor Green -BackgroundColor Black 
                 Write-log -Message "A maquina $($Maquina) Pode ser removida!"
                 
             }
         }
     } Else {
-        #Write-Host $Patrimonio
         #Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
+        #Write-Host $Patrimonio
         Write-log -Message "Nenhuma maquina com o patrimonio $Patrimonio"
         
     }
 }
 
-#3º Passo: Exclui as maquinas identificadas do Active Directory
-#$Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas
 
-#ForEach ($Maquina_Encontrada in $Maquinas_Encontradas) {
 
- #   Try {
-
-  #      Remove-ADComputer -Identity "$($Maquina_AD)"
-
-   # } Catch {
-
-    #    Write-Log "Não foi possivel excluir a máquina $($Maquina_Encontrada) $_"
-        
-    #}
-#}
 
   
   
