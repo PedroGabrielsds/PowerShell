@@ -85,12 +85,12 @@ begin {
   $global:configLogStyle = 'CMTrace'
 
   $Entrada = "$mainScriptRoot\Maquinas_Doacao.txt"
-  $Endereco_Maquinas_Encontradas = "$mainScriptRoot\Maquinas_Nao_Encontradas.txt"
+  $Endereco_Maquinas_Encontradas = "$mainScriptRoot\Maquinas_Encontradas.txt"
   $Endereco_Maquinas_Nao_Encontradas = "$mainScriptRoot\Maquinas_Nao_Encontradas.txt"
+  $Endereco_Maquinas_VM = "$mainScriptRoot\Maquinas_VM.txt"
   $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 
-  
-  
+
   # ▲                                                         ▲ 
   # █  . . . . . . . . . . . . . . . . . . . . . . . . . . .  █
   # ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
@@ -214,13 +214,13 @@ ForEach ($Patrimonio in $Patrimonios) {
             If ($Maquina -like "*VM") {
      
                 #Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
-                #Add-Content -Path $Endereco_Maquinas_VM -Value ($($Maquinas) -split '=',2)[1]
+                Add-Content -Path $Endereco_Maquinas_VM -Value $Maquina
                 Write-log -Message "Maquina $($Maquina) não pode ser excluido do Active Directory" -severity 2
      
             } Else {
-                
-                #Add-Content -path $Endereco_Maquinas_Encontradas -value ($($Maquinas)
-                #Write-Host ($($Maquina) -split '=',2)[1] -ForegroundColor Green -BackgroundColor Black 
+
+                #Write-Host ($($Maquina) -ForegroundColor Green -BackgroundColor Black 
+                Add-Content -path $Endereco_Maquinas_Encontradas -value $($Maquina)
                 Write-log -Message "A maquina $($Maquina) Pode ser removida!"
                 
             }
