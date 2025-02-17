@@ -87,7 +87,7 @@ begin {
   $Entrada = "$mainScriptRoot\Maquinas_Doacao.txt"
 
   $Endereco_Maquinas_Encontradas = "$mainScriptRoot\Maquinas_Encontradas.txt"
-  $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"  # Substitua com o caminho da sua OU
+  $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
 
   
   
