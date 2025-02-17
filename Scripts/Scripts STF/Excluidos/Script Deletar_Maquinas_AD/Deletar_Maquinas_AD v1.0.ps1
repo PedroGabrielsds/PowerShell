@@ -63,20 +63,19 @@ ForEach ($Patrimonio in $Patrimonios) {
      
                 #Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
                 #Add-Content -Path $Endereco_Maquinas_VM -Value ($($Maquinas) -split '=',2)[1]
-                Write-log -Message "Maquina $($Computador) não pode ser excluido do Active Directory"
+                Write-log -Message "Maquina $($Maquina) não pode ser excluido do Active Directory" -Severity 3
      
             } Else {
                 
-                #Add-Content -path $Endereco_Maquinas_Encontradas -value ($($Maquinas) -split '=',2)[1]
-                #Write-Host ($($Maquina) -split '=',2)[1] -ForegroundColor Green -BackgroundColor Black 
-                Write-log -Message ($($Maquinas) -split '=',2)[1]
+                #Add-Content -path $Endereco_Maquinas_Encontradas -value $Maquinas
+                Write-log -Message "Máquina $($Maquina) foi encontrada! " -Severity 0
                 
             }
         }
     } Else {
-        #Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
+        Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
         #Write-Host $Patrimonio
-        Write-log -Message "$Patrimonio"
+        #Write-log -Message "Máquina com o patrimonio $Patrimonio já foi excluída!" 
         
     }
 }
@@ -90,7 +89,7 @@ ForEach ($Maquina_Encontrada in $Maquinas_Encontradas) {
 
     } Catch {
 
-        Write-Log "Não foi possivel excluir a máquina $($Maquina_Encontrada) do Active Directory"
+        Write-Log "Não foi possivel excluir a máquina $($Maquina_Encontrada) Erro: $_"
         
     }
 }
