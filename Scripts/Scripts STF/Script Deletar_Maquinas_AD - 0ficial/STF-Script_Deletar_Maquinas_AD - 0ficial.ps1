@@ -186,61 +186,68 @@ Try {
     Write-log -Message "Não foi possivel consultar o AD" -severity 3
 }
 
- 
+Start-Process -FilePath "C:\Temp\LOGs\$configLogName"
 [String]$FaseDoScript = 'Procurar patrimonio nas maquinas'
 
 #1º Passo: Identificar máquinas com os patrimônios da planilha
 ForEach ($Patrimonio in $Patrimonios) {
 
-    Try {
+  Try {
         
-        #$Maquinas = (Get-ADComputer -Filter "Name -like '*$Patrimonio*'" -Properties CN).CN
-        $maquinas = $maquinas_ad | Where-Object { $_ -like "*$patrimonio*" }
+    #$Maquinas = (Get-ADComputer -Filter "Name -like '*$Patrimonio*'" -Properties CN).CN
+    $maquinas = $maquinas_ad | Where-Object { $_ -like "*$patrimonio*" }
     
-    } Catch {
+  } Catch {
      
-        Write-log -Message "Não foi possivel buscar as maquinas no AD" -severity 3
+    Write-log -Message "Não foi possivel buscar as maquinas no AD" -severity 3
     
-    }
-
+  }
     
-    If ($Maquinas.Count -gt 0) {
+  If ($Maquinas.Count -gt 0) {
         
-        ForEach ($Maquina in $Maquinas) {
+    ForEach ($Maquina in $Maquinas) {
 
-
-            [String]$FaseDoScript = 'verificando maquinas VM'
-            #2º Passo: Verifica se existem máquinas VM na lista
-            If ($Maquina -like "*VM") {
+      #2º Passo: Verifica se existem máquinas VM na lista
+      If ($Maquina -like "*VM") {
      
-                #Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
-                Add-Content -Path $Endereco_Maquinas_VM -Value $Maquina
-                Write-log -Message "Maquina $($Maquina) não pode ser excluido do Active Directory" -severity 2
+        #Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
+        Add-Content -Path $Endereco_Maquinas_VM -Value $Maquina
+        Write-log -Message "Maquina $($Maquina) não pode ser excluido do Active Directory" -severity 2
      
-            } Else {
+      } Else {
 
-                #Write-Host ($($Maquina) -ForegroundColor Green -BackgroundColor Black 
-                Add-Content -path $Endereco_Maquinas_Encontradas -value $($Maquina)
-                Write-log -Message "A maquina $($Maquina) Pode ser removida!"
+        #Write-Host ($($Maquina) -ForegroundColor Green -BackgroundColor Black 
+        Add-Content -path $Endereco_Maquinas_Encontradas -value $($Maquina)
+        Write-log -Message "A maquina $($Maquina) Pode ser removida!"
                 
-            }
-        }
-    } Else {
-        Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
-        #Write-Host $Patrimonio
-        Write-log -Message "Nenhuma maquina com o patrimonio $Patrimonio"
-        
+      }
     }
+  } Else {
+      Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
+      #Write-Host $Patrimonio
+      Write-log -Message "Nenhuma maquina com o patrimonio $Patrimonio"
+        
+  }
 }
-    #3º Passo: Exclui as maquinas identificadas do Active Directory
 
-    #$Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas
+#3º Passo: Exclui as maquinas identificadas do Active Directory
+[String]$FaseDoScript = "Excluindo máquinas do AD"
 
+#$Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas
+#ForEach ($Maquina_Encontrada in $Maquinas_Encontradas) {
 
-
-
+# Try {
   
+  #Remove-ADComputer -Identity "$($Maquina_AD)"
+  #Write-Log -Message "Máquina $Maquina_Encontrada "
   
+  #} Catch {
+  
+    #Write-Log "Não foi possivel excluir a máquina $($Maquina_Encontrada) Error:$_"
+          
+  #}
+#}
+
   # ▲                                                         ▲ 
   # █  . . . . . . . . . . . . . . . . . . . . . . . . . . .  █
   # ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
