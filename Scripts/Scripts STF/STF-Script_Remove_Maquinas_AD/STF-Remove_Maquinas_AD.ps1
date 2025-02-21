@@ -19,6 +19,7 @@ $Patrimonios = '\\Caminho para arquivo com patrimonios'
 #--------------------------------------------------
 #Importando Módulo Active Directory 
 
+[String]$FaseDoScript = 'Importando módulo AD'
 #1º Passo - Importar Módulo AD 
 Try {
     Import-Module Active-Directory 
@@ -50,6 +51,7 @@ If ($Patrimonios.count -gt 0) {
     
         } Else {
 
+            [String]$FaseDoScript = 'Localizando Máquina no AD'
             #3º Passo - Procurar por patrimonios nas maquinas AD
             Try {
                 $Maquina_Encontrada = $Maquinas_AD | Where-Object {$_ -match $Patrimonio}
@@ -61,6 +63,7 @@ If ($Patrimonios.count -gt 0) {
 
             }
             
+            [String]$FaseDoScript = 'Excluíndo máquina do AD'
             #4º Passo - Excluir Máquinas do AD
             Try {
                 Remove-AdComputer -Identity $Maquina_Encontrada
