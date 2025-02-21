@@ -74,15 +74,18 @@ begin {
 
   # Variáveis utilizadas pela função Write-Log para criar um arquivo de LOG
   # compatível com o CMTRACE e salvar o logo na rede
-  $global:DataLog = (Get-Date).ToString("yyyy.MM.dd-HH.mm.ss")
+  $global:DataLog = (Get-Date).ToString("yyyy.MM.dd")
   $global:configLogDir = 'C:\Temp\LOGs'
-  $global:configLogName = "STF-Modelo_Script-($DataLog).log"
+  $global:configLogName = "STF-Remove_Maquinas_AD-($DataLog).log"
   $global:configLogAppend = $true
   $global:configLogMaxSize = 10
   $global:configLogMaxHistory = 10
   $global:configLogWriteToHost = $True
   $global:configLogDebugMessage = $False
   $global:configLogStyle = 'CMTrace'
+
+  $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
+  $Patrimonios = "$MainScriptPath\Nome arquivo com patrimonios"
   
   
   # ▲                                                         ▲ 
@@ -154,21 +157,82 @@ begin {
   # █  . . . . . . . . . . . . . . . . . . . . . . . . . . .  █
   # ▼                                                         ▼
  
-  # Você pode usar a vairável $FaseDoScript para identificar no LOG a Fase ou ETAPA do seu Script. 
-  # Isso ajuda na hora de verificar o LOG pra entender o que o script fez. 
-  # Sempre que iniciar uma nota Fase ou Etapa no seu Script, configure essa variável.
-  # Exemplos: 
-  #           [String]$FaseDoScript = 'Etapa 01'
-  #           [String]$FaseDoScript = 'Etapa 02'
-  #           [String]$FaseDoScript = 'Consulta AD'
-  #           [String]$FaseDoScript = 'Compara Dados'
-  #           [String]$FaseDoScript = 'Correção AD'
-  #           [String]$FaseDoScript = 'Consulta Servidor'
+      #|----------------------------------------------------|
+      #|                   Passos do Script                 |
+      #|                                                    |
+      #| 1º Passo: Importar Módulo AD                       |
+      #| 2º Passo: Adicionar máquinas do AD em uma variavel |
+      #| 3º Passo: Procurar por patrimonios nas maquinas AD |
+      #| 4º Passo: Excluir Máquinas do AD                   |
+      #|                                                    |
+      #|----------------------------------------------------|
 
-  
-  
-  
-  
+      #--------------------------------------------------
+      #Importando Módulo Active Directory 
+
+      [String]$FaseDoScript = 'Importando módulo AD'
+      #1º Passo - Importar Módulo AD 
+      Try {
+          Import-Module Active-Directory 
+          Write-Log -message "Módulo do AD importado com sucesso!"
+
+      } Catch {
+          Write-Log -message "Não foi possível importar o módulo do AD! Error: $_" -Severity 3
+
+      }
+
+      #---------------------------------------------------
+      #Inicio Script 
+
+      #2º Passo - Adicionar máquinas do AD em uma variavel 
+      $Maquinas_AD += (Get-ADComputer -Filter * -SearchBase $OU -Properties CN).CN
+
+      #Verificando se os patrimônios existem! 
+      If ($Patrimonios.count -gt 0) {
+          
+          foreach ($Patrimonio in $Patrimonios) {
+              #Remove os espaços de cada patrimonio
+              $Patrimonio = $Patrimonio.Trim()
+
+              #Verifica se a linha está em branco
+              If (-not($Patrimonio)) {
+
+                  Write-Log -message "Foi encontrado um patrimonio em branco e o script vai ignora-lo!" -Severity 2
+                  Continue
+          
+              } Else {
+
+                  [String]$FaseDoScript = 'Localizando Máquina no AD'
+                  #3º Passo - Procurar por patrimonios nas maquinas AD
+                  Try {
+                      $Maquina_Encontrada = $Maquinas_AD | Where-Object {$_ -match $Patrimonio}
+                      $Maquina_Encontrada = $Maquina_Encontrada.Trim()
+                      Write-Log -message "Máquina $Maquina_Encontrada localizada!" 
+
+                  } Catch {
+                      Write-Log -message "A máquina $Maquina_Encontrada não foi localizada no AD!" -Severity 3
+
+                  }
+                  
+                  [String]$FaseDoScript = 'Excluíndo máquina do AD'
+                  #4º Passo - Excluir Máquinas do AD
+                  Try {
+                      Remove-AdComputer -Identity $Maquina_Encontrada
+                      Write-Log -message "Máquina $Maquina_Encontrada foi excluída com êxito!" 
+
+                  } Catch {
+                      Write-Log -message "Não foi possível excluir a máquina $Maquina_Encontrada do AD! Error: $_" -Severity 3
+
+                  }
+              }
+          }
+          
+      } Else {
+          Write-Log -message "Arquivos de patrimônios vazio!" -Severity 3
+          Exit
+          
+      }
+
   # ▲                                                         ▲ 
   # █  . . . . . . . . . . . . . . . . . . . . . . . . . . .  █
   # ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
