@@ -180,11 +180,11 @@ begin {
 #1º Passo - Puxando máquinas do AD
 Try {
 
-    $maquinas_ad = (Get-ADComputer -Filter * -SearchBase "$OU" -Properties CN).CN
+  $maquinas_ad = (Get-ADComputer -Filter * -SearchBase "$OU" -Properties CN).CN
 
 } Catch {
     
-    Write-log -Message "Não foi possivel consultar o AD" -severity 3
+  Write-log -Message "Não foi possivel consultar o AD" -severity 3
 }
 
 Start-Process -FilePath "$configLogDir\$configLogName"
@@ -226,7 +226,7 @@ ForEach ($Patrimonio in $Patrimonios) {
       Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
       #Write-Host $Patrimonio
       Write-log -Message "Nenhuma maquina com o patrimonio $Patrimonio"
-  }
+    }
 }
 
 #4º Passo: Exclui as maquinas identificadas do Active Directory
