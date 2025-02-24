@@ -76,7 +76,7 @@ begin {
   # compatível com o CMTRACE e salvar o logo na rede
   $global:DataLog = (Get-Date).ToString("yyyy.MM.dd")
   $global:configLogDir = 'C:\Temp\LOGs'
-  $global:configLogName = "STF-Maquinas_A_Remover_Do_AD-($DataLog).log"
+  $global:configLogName = "STF-Consulta_Maquinas_AD-($DataLog).log"
   $global:configLogAppend = $true
   $global:configLogMaxSize = 10
   $global:configLogMaxHistory = 10
