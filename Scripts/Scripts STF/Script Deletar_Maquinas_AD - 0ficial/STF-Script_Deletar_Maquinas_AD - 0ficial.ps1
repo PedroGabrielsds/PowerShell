@@ -165,10 +165,11 @@ begin {
     $Patrimonios = Get-Content $Entrada
 
     #|----------------------------------------------------------------------|
-    #|                         Passos do Script                             |                     
-    #|  1º Passo: Tenta identificar máquinas com os patrimônios da planilha |                                                                    
-    #|  2º Passo: Verifica se existem máquinas VM na lista                  |
-    #|  3º Passo: Exclui as maquinas identificadas do Active Directory      |                                                               
+    #|                         Passos do Script                             |
+    #|  1º Passo - Puxando máquinas do AD                                   |               
+    #|  2º Passo: Tenta identificar máquinas com os patrimônios da planilha |                                                                    
+    #|  3º Passo: Verifica se existem máquinas VM na lista                  |
+    #|  4º Passo: Exclui as maquinas identificadas do Active Directory      |                                                               
     #|                                                                      |
     #|----------------------------------------------------------------------|
 
@@ -176,7 +177,7 @@ begin {
 #InicioAlgoritmo
 
 [String]$FaseDoScript = 'Buscar Maquinas no AD'
-
+#1º Passo - Puxando máquinas do AD
 Try {
 
     $maquinas_ad = (Get-ADComputer -Filter * -SearchBase "$OU" -Properties CN).CN
@@ -186,15 +187,14 @@ Try {
     Write-log -Message "Não foi possivel consultar o AD" -severity 3
 }
 
-Start-Process -FilePath "C:\Temp\LOGs\$configLogName"
+Start-Process -FilePath "$configLogDir\$configLogName"
 [String]$FaseDoScript = 'Procurar patrimonio nas maquinas'
 
-#1º Passo: Identificar máquinas com os patrimônios da planilha
+#2º Passo: Identificar máquinas com os patrimônios da planilha
 ForEach ($Patrimonio in $Patrimonios) {
 
   Try {
         
-    #$Maquinas = (Get-ADComputer -Filter "Name -like '*$Patrimonio*'" -Properties CN).CN
     $maquinas = $maquinas_ad | Where-Object { $_ -like "*$patrimonio*" }
     
   } Catch {
@@ -207,7 +207,7 @@ ForEach ($Patrimonio in $Patrimonios) {
         
     ForEach ($Maquina in $Maquinas) {
 
-      #2º Passo: Verifica se existem máquinas VM na lista
+      #3º Passo: Verifica se existem máquinas VM na lista
       If ($Maquina -like "*VM") {
      
         #Write-Host "Maquina $($Computador) não pode ser excluido do Active Directory"
@@ -226,11 +226,10 @@ ForEach ($Patrimonio in $Patrimonios) {
       Add-Content -Path $Endereco_Maquinas_Nao_Encontradas -Value $Patrimonio
       #Write-Host $Patrimonio
       Write-log -Message "Nenhuma maquina com o patrimonio $Patrimonio"
-        
   }
 }
 
-#3º Passo: Exclui as maquinas identificadas do Active Directory
+#4º Passo: Exclui as maquinas identificadas do Active Directory
 [String]$FaseDoScript = "Excluindo máquinas do AD"
 
 #$Maquinas_Encontradas = Get-Content $Endereco_Maquinas_Encontradas

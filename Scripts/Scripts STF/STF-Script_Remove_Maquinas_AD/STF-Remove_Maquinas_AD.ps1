@@ -85,7 +85,7 @@ begin {
   $global:configLogStyle = 'CMTrace'
 
   $OU = "OU=Estacoes,OU=Microinformatica,OU=Maquinas,DC=rede,DC=stf,DC=gov,DC=br"
-  $Patrimonios = "$MainScriptPath\Nome arquivo com patrimonios"
+  $Patrimonios = "$MainScriptPath\Nome arquivo com patrimonios aqui" #Preencha com o nome do seu arquivo
   
   
   # ▲                                                         ▲ 
@@ -206,21 +206,29 @@ begin {
                   Try {
                       $Maquina_Encontrada = $Maquinas_AD | Where-Object {$_ -match $Patrimonio}
                       $Maquina_Encontrada = $Maquina_Encontrada.Trim()
-                      Write-Log -message "Máquina $Maquina_Encontrada localizada!" 
+                      #Verificando se há máquinas VM na relação!
+                      If ($Maquina_Encontrada -Like "*VM") {
+                        Write-Log -message "$Maquina_Encontrada - Máquina VM localizada!" -Severity 2
 
+                      } Else {
+                        $Maquina_Validada = $Maquina_Encontrada | Where-Object {$_ -NotLike "*VM"}
+                        $Maquina_Validada = $Maquina_Validada.Trim()
+                        Write-Log -message "Máquina $Maquina_Validada localizada!"
+
+                      }
                   } Catch {
-                      Write-Log -message "A máquina $Maquina_Encontrada não foi localizada no AD!" -Severity 3
+                    Write-Log -message "A máquina $Maquina_Encontrada não foi localizada no AD!" -Severity 3
 
                   }
                   
                   [String]$FaseDoScript = 'Excluíndo máquina do AD'
                   #4º Passo - Excluir Máquinas do AD
                   Try {
-                      Remove-AdComputer -Identity $Maquina_Encontrada
-                      Write-Log -message "Máquina $Maquina_Encontrada foi excluída com êxito!" 
+                      Remove-AdComputer -Identity $Maquina_Validada
+                      Write-Log -message "Máquina $Maquina_Validada foi excluída com êxito!" 
 
                   } Catch {
-                      Write-Log -message "Não foi possível excluir a máquina $Maquina_Encontrada do AD! Error: $_" -Severity 3
+                      Write-Log -message "Não foi possível excluir a máquina $Maquina_Validada do AD! Error: $_" -Severity 3
 
                   }
               }
