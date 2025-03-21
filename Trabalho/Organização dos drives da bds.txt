@@ -1,9 +1,0 @@
-Organização dos drives da bds: 
-
-16/01/2025: 
-Para fazer:
-- Verificar modelos dos micros que estão sendo utilizados e revisar seus respectivos drivers
-
-- Verificar modelos das impressoras e scanners que estão sendo utilizados e revisar seus respectivos drivers
-
-Feito: 
