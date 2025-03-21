@@ -1,0 +1,13 @@
+Softwares:
+
+\\Arquivos\bds\ESTACOES\SOFTWARES
+
+
+Scripts:
+
+\\Arquivos\bds\ESTACOES\SCRIPTS
+
+
+Drivers:
+
+\\Arquivos\bds\ESTACOES\DRIVERS
