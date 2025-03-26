@@ -185,8 +185,7 @@ function Install-ADTDeployment
 		#  █        INÍCIO dos comandos de PÓS-INSTALAÇÃO            █  
 		#  ▼  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▼  
 			
-
-			## <COLOQUE AQUI AS TAREFAS DE PÓS-INSTALAÇÃO>
+			## <COLOQUE AQUI AS TAREFAS DE PÓS-INSTALAÇÃO> ▼▼
 
 			#Verificar se existe a tarefa "Updater" e se existir apaga-la!
 			$Tarefas_Agendadas = Get-ScheduledTaskInfo
@@ -197,26 +196,29 @@ function Install-ADTDeployment
 
 				If ($Tarefa_LightShot.Count -gt 0) {
 
-					Write-Host "Tarefas agendadas do LightShot encontradas!" -BackgroundColor Black -ForegroundColor Green
+					#Write-Host "Tarefas agendadas do LightShot encontradas!" -BackgroundColor Black -ForegroundColor Green
+					Write-ADTLogEntry -Message "Tarefas agendadas do LightShot encontradas!" -Severity 0
 
 					Try {
 
 						Unregister-scheduledtask -taskname $Tarefa_LightShot.name -Confirm:$false 
-						Write-Host "Tarefas agendadas do LightShot excluida com sucesso!" -BackgroundColor Black -ForegroundColor Green
+						#Write-Host "Tarefas agendadas do LightShot excluida com sucesso!" -BackgroundColor Black -ForegroundColor Green
+						Write-ADTLogEntry "Tarefas agendadas do LightShot excluida com sucesso!" -Severity 0
 					
 					} Catch {
 
-						Write-Host "Não foi possivel excluir a tarefa agendada do LightShot" -BackgroundColor Black -ForegroundColor Red
+						#Write-Host "Não foi possivel excluir a tarefa agendada do LightShot" -BackgroundColor Black -ForegroundColor Red
+						Write-ADTLogEntry "Não foi possivel excluir a tarefa agendada do LightShot" -Severity 3
 
 					}
 				}
 
 			} Else {
 
-				Write-Host "Não foi possivel coletar as informações de tarefas agendadas" -BackgroundColor Black -ForegroundColor Red
+				#Write-Host "Não foi possivel coletar as informações de tarefas agendadas" -BackgroundColor Black -ForegroundColor Red
+				Write-ADTLogEntry "Não foi possivel coletar as informações de tarefas agendadas" -Severity 3
 
 			}
-
 
 			## Rotina para executar o inventario no cliente quando a variável $roda_inventario é definida como 'SIM'
 			If ($roda_inventario -ieq 'SIM') {
@@ -251,7 +253,7 @@ function Uninstall-ADTDeployment
 			## Mostra a Mensagem de Progresso (com a mensagem padrão)
 		    Show-ADTInstallationProgress -StatusMessage "Desinstalando $($adtSession.AppName) $($adtSession.AppVersion)"
 
-			## <COLOQUE AQUI AS TAREFAS DE PRÉ-DESINSTALAÇÃO>
+			## <COLOQUE AQUI AS TAREFAS DE PRÉ-DESINSTALAÇÃO> ▼▼
 
 			
 		#  ▲  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▲ 
@@ -277,7 +279,7 @@ function Uninstall-ADTDeployment
 	#  █          INÍCIO dos comandos de DESINSTALAÇÃO           █ 
 	#  ▼  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▼  
 
-		## <COLOQUE AQUI AS TAREFAS DE DESINSTALAÇÃO>
+		## <COLOQUE AQUI AS TAREFAS DE DESINSTALAÇÃO> ▼▼
 
 		## Desinstalação do LightShot com parametro silenciosa e não reiniciar o computador.
 		Start-ADTProcess -FilePath "$envProgramFilesX86\Skillbrains\lightshot\unins000.exe" -ArgumentList "/VERYSILENT /NORESTART" -WindowStyle Hidden
@@ -297,28 +299,33 @@ function Uninstall-ADTDeployment
 	#  █       INÍCIO dos comandos de PÓS-DESINSTALAÇÃO          █  
 	#  ▼  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▼  
 
-		## <COLOQUE AQUI AS TAREFAS DE PÓS-DESINSTALAÇÃO>
+		## <COLOQUE AQUI AS TAREFAS DE PÓS-DESINSTALAÇÃO> ▼▼
 
 		#Apagar todos o registros da tarefa updater do "Regedit (Editor de registro)!"
 		$Caminho_Regedit_LightShot = "HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Skillbrains"
 
 		If (test-path $Caminho_Regedit_LightShot) {
 			
-			Write-Host "Registros encontrados com sucesso!" -BackgroundColor Black -ForegroundColor Green
+			#Write-Host "Registros encontrados com sucesso!" -BackgroundColor Black -ForegroundColor Green
+			Write-ADTLogEntry -Message "Registros encontrados com sucesso!" -Severity 0
+
 			Try {
 
 				Remove-Item -Path $Caminho_Regedit_LightShot -Recurse -Confirm:$false  
-				Write-Host "Registros do LightShot excluidos com sucesso!" -BackgroundColor Black -ForegroundColor Green
+				#Write-Host "Registros do LightShot excluidos com sucesso!" -BackgroundColor Black -ForegroundColor Green
+				Write-ADTLogEntry -Message "Registros do LightShot excluidos com sucesso!" -Severity 0
 
 			} Catch {
 				
-				Write-Host "Não foi possivel excluir os registros do LightShot" -BackgroundColor Black -ForegroundColor Red   
+				#Write-Host "Não foi possivel excluir os registros do LightShot" -BackgroundColor Black -ForegroundColor Red   
+				Write-ADTLogEntry -message "Não foi possivel excluir os registros do LightShot" -Severity 3
 
 			}
 
 		} Else {
 
-			Write-Host "O caminho especificado não foi encontrado no Editor de registro!"
+			#Write-Host "O caminho especificado não foi encontrado no Editor de registro!"
+			Write-ADTLogEntry -Message "O caminho especificado não foi encontrado no Editor de registro!" -Severity 3
 
 		}
        
@@ -354,7 +361,7 @@ function Repair-ADTDeployment
 	#  ▼  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▼  
 
 
-		## <COLOQUE AQUI AS TAREFAS DE PRÉ-REPARAÇÃO>
+		## <COLOQUE AQUI AS TAREFAS DE PRÉ-REPARAÇÃO> ▼▼
 	
 	
 
@@ -382,7 +389,7 @@ function Repair-ADTDeployment
 	#  █       INÍCIO dos comandos de REPARAÇÃO                  █  
 	#  ▼  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▼  
 
-		## <COLOQUE AQUI AS TAREFAS DE REPARAÇÃO>
+		## <COLOQUE AQUI AS TAREFAS DE REPARAÇÃO> ▼▼
 	
 	
 
@@ -402,7 +409,7 @@ function Repair-ADTDeployment
 	#  █       INÍCIO dos comandos de PÓS-REPARAÇÃO              █  
 	#  ▼  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▼  
 
-		## <COLOQUE AQUI AS TAREFAS DE PÓS-REPARAÇÃO>
+		## <COLOQUE AQUI AS TAREFAS DE PÓS-REPARAÇÃO> ▼▼
 	
 	
 
