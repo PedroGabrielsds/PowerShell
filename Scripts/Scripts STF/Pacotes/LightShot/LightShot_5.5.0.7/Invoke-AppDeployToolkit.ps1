@@ -188,6 +188,35 @@ function Install-ADTDeployment
 
 			## <COLOQUE AQUI AS TAREFAS DE PÓS-INSTALAÇÃO>
 
+			#Verificar se existe a tarefa "Updater" e se existir apaga-la!
+			$Tarefas_Agendadas = Get-ScheduledTaskInfo
+
+			If ($Tarefas_Agendadas.Count -gt 0) {
+				
+				$Tarefa_LightShot = $Tarefas_Agendadas | Where-Object {$_.Command -like "*Skillbrains*"}
+
+				If ($Tarefa_LightShot.Count -gt 0) {
+
+					Write-Host "Tarefas agendadas do LightShot encontradas!" -BackgroundColor Black -ForegroundColor Green
+
+					Try {
+
+						Unregister-scheduledtask -taskname $Tarefa_LightShot.name -Confirm:$false 
+						Write-Host "Tarefas agendadas do LightShot excluida com sucesso!" -BackgroundColor Black -ForegroundColor Green
+					
+					} Catch {
+
+						Write-Host "Não foi possivel excluir a tarefa agendada do LightShot" -BackgroundColor Black -ForegroundColor Red
+
+					}
+				}
+
+			} Else {
+
+				Write-Host "Não foi possivel coletar as informações de tarefas agendadas" -BackgroundColor Black -ForegroundColor Red
+
+			}
+
 
 			## Rotina para executar o inventario no cliente quando a variável $roda_inventario é definida como 'SIM'
 			If ($roda_inventario -ieq 'SIM') {
@@ -268,6 +297,30 @@ function Uninstall-ADTDeployment
 	#  █       INÍCIO dos comandos de PÓS-DESINSTALAÇÃO          █  
 	#  ▼  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▼  
 
+		## <COLOQUE AQUI AS TAREFAS DE PÓS-DESINSTALAÇÃO>
+
+		#Apagar todos o registros da tarefa updater do "Regedit (Editor de registro)!"
+		$Caminho_Regedit_LightShot = "HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Skillbrains"
+
+		If (test-path $Caminho_Regedit_LightShot) {
+			
+			Write-Host "Registros encontrados com sucesso!" -BackgroundColor Black -ForegroundColor Green
+			Try {
+
+				Remove-Item -Path $Caminho_Regedit_LightShot -Recurse -Confirm:$false  
+				Write-Host "Registros do LightShot excluidos com sucesso!" -BackgroundColor Black -ForegroundColor Green
+
+			} Catch {
+				
+				Write-Host "Não foi possivel excluir os registros do LightShot" -BackgroundColor Black -ForegroundColor Red   
+
+			}
+
+		} Else {
+
+			Write-Host "O caminho especificado não foi encontrado no Editor de registro!"
+
+		}
        
         ## Refresh the Windows Explorer Shell, which causes the desktop icons and the environment variables to be reloaded.
         #Update-Desktop
