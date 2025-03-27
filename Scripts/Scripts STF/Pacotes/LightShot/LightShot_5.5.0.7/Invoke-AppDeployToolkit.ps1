@@ -187,6 +187,11 @@ function Install-ADTDeployment
 			
 			## <COLOQUE AQUI AS TAREFAS DE PÓS-INSTALAÇÃO> ▼▼
 
+
+			$GetScheduledTaskInfo = "$($adtSession.DirSupportFiles)\FuncaoGetScheduledTaskInfo.ps1"
+
+			. $GetScheduledTaskInfo
+
 			#Verificar se existe a tarefa "Updater" e se existir apaga-la!
 			$Tarefas_Agendadas = Get-ScheduledTaskInfo
 
@@ -201,7 +206,7 @@ function Install-ADTDeployment
 
 					Try {
 
-						Unregister-scheduledtask -taskname $Tarefa_LightShot.name -Confirm:$false 
+						Unregister-scheduledtask -taskname $Tarefa_LightShot.name -Confirm:$false
 						#Write-Host "Tarefas agendadas do LightShot excluida com sucesso!" -BackgroundColor Black -ForegroundColor Green
 						Write-ADTLogEntry "Tarefas agendadas do LightShot excluida com sucesso!" -Severity 0
 					
@@ -304,31 +309,8 @@ function Uninstall-ADTDeployment
 		#Apagar todos o registros da tarefa updater do "Regedit (Editor de registro)!"
 		$Caminho_Regedit_LightShot = "HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Skillbrains"
 
-		If (test-path $Caminho_Regedit_LightShot) {
-			
-			#Write-Host "Registros encontrados com sucesso!" -BackgroundColor Black -ForegroundColor Green
-			Write-ADTLogEntry -Message "Registros encontrados com sucesso!" -Severity 0
+		Remove-ADTRegistryKey -Key $Caminho_Regedit_LightShot -Recurse
 
-			Try {
-
-				Remove-Item -Path $Caminho_Regedit_LightShot -Recurse -Confirm:$false  
-				#Write-Host "Registros do LightShot excluidos com sucesso!" -BackgroundColor Black -ForegroundColor Green
-				Write-ADTLogEntry -Message "Registros do LightShot excluidos com sucesso!" -Severity 0
-
-			} Catch {
-				
-				#Write-Host "Não foi possivel excluir os registros do LightShot" -BackgroundColor Black -ForegroundColor Red   
-				Write-ADTLogEntry -message "Não foi possivel excluir os registros do LightShot" -Severity 3
-
-			}
-
-		} Else {
-
-			#Write-Host "O caminho especificado não foi encontrado no Editor de registro!"
-			Write-ADTLogEntry -Message "O caminho especificado não foi encontrado no Editor de registro!" -Severity 3
-
-		}
-       
         ## Refresh the Windows Explorer Shell, which causes the desktop icons and the environment variables to be reloaded.
         #Update-Desktop
 
