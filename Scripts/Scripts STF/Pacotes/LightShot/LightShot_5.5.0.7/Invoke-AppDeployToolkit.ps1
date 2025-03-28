@@ -251,6 +251,8 @@ function Uninstall-ADTDeployment
 		#  █       INÍCIO dos comandos de PRÉ-DESINSTALAÇÃO          █ 
 		#  ▼  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▼  
 
+			  ## <COLOQUE AQUI AS TAREFAS DE PRÉ-DESINSTALAÇÃO> ▼▼
+
 			## Exemplo 1
 			## Mostra uma mensagem inicial, fecha automaticamente o Internet Explorer após uma contagem regressiva de 60 segundos
 			#Show-InstallationWelcome -CloseApps 'iexplore' -CloseAppsCountdown 60
@@ -258,7 +260,7 @@ function Uninstall-ADTDeployment
 			## Mostra a Mensagem de Progresso (com a mensagem padrão)
 		    Show-ADTInstallationProgress -StatusMessage "Desinstalando $($adtSession.AppName) $($adtSession.AppVersion)"
 
-			## <COLOQUE AQUI AS TAREFAS DE PRÉ-DESINSTALAÇÃO> ▼▼
+			
 
 			
 		#  ▲  . . . . . . . . . . . . . . . . . . . . . . . . . . .  ▲ 
