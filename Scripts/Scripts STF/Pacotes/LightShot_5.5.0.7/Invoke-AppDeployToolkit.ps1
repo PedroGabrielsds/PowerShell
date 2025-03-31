@@ -293,7 +293,7 @@ function Install-ADTDeployment
     } Else {
 
         #Write-Host "Não foi possivel coletar as informações de tarefas agendadas" -BackgroundColor Black -ForegroundColor Red
-        Write-ADTLogEntry "Não foi possivel coletar as informações de tarefas agendadas" -Severity 3
+        Write-ADTLogEntry "Não foi possivel coletar as informações das tarefas agendadas" -Severity 3
 
     }
 
@@ -367,7 +367,7 @@ function Uninstall-ADTDeployment
       ## <COLOQUE AQUI AS TAREFAS DE PÓS-DESINSTALAÇÃO> ▼▼
 
     #Apagar todos o registros da tarefa updater do Regedit (Editor de registro)!
-    $Caminho_Regedit_LightShot = "HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Skillbrains"
+    $Caminho_Regedit_LightShot = "HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Skillbrains"
 
     Remove-ADTRegistryKey -Key $Caminho_Regedit_LightShot -Recurse
 
