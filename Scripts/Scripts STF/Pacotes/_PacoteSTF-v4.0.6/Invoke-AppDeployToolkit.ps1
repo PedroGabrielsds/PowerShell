@@ -142,7 +142,7 @@ $adtSession = @{
     ## INSTALA um aplicativo MSI com TRANSFORM (Calibre)
     Start-ADTMsiProcess -Action Install -FilePath "$($adtSession.DirFiles)\calibre-64bit-$($adtSession.AppVersion).msi" -Transforms "$($adtSession.DirFiles)\calibre-64bit-$($adtSession.AppVersion).mst" -ArgumentList " /qn /norestart"
 
-    ## DESINSTALA um aplicaitvo MSI pelo PRODUCTCODE
+    ## DESINSTALA um aplicativo MSI pelo PRODUCTCODE
     Start-ADTMsiProcess -Action 'Uninstall' -ProductCode '{32019BE2-E62F-48CF-B274-2521588B83D8}'
 
     ## DESINSTALA um aplicativo MSI pelo Nome (Calibre)
@@ -165,7 +165,7 @@ $adtSession = @{
     ## Concede Permissão de LEITURA e ESCRITA para "USUÁRIOS AUTENTICADOS" (SID S-1-5-11) na pasta de Plugins do NotePad++
     Set-ADTItemPermission -Path "$envProgramFiles\Notepad++\plugins" -User "*S-1-5-11" -Permission ListDirectory,CreateFiles,CreateDirectories,Write,Delete,Read,Modify -Inheritance ObjectInherit,ContainerInherit
 
-    ## Mostra uma mensagem no final falando que a inntalação foi bem sucedida. É bom pra usar em aplicativos que ficam na Central de Software
+    ## Mostra uma mensagem no final falando que a instalação foi bem sucedida. É bom pra usar em aplicativos que ficam na Central de Software
     Show-ADTInstallationPrompt -Message "$($adtSession.AppName) $($adtSession.AppVersion) foi instalado com sucesso no seu computador! `n`nClique OK para finalizar." -MessageAlignment 'Left' -ButtonRightText 'OK' -Icon Information -NoWait 			
 
     ## Atualiza o Shell do Windows Explorer, o que faz com que os ícones da área de trabalho e as variáveis ​​de ambiente sejam recarregados.

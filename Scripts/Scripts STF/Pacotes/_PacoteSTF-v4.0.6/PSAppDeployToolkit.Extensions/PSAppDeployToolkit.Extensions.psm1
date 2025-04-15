@@ -1,4 +1,4 @@
-<#
+﻿<#
 
 .SYNOPSIS
 PSAppDeployToolkit.Extensions - Provides the ability to extend and customize the toolkit by adding your own functions that can be re-used.
@@ -97,6 +97,314 @@ function New-ADTExampleFunction
     }
 }
 
+function Add-STFPathEnvironmentVariable
+{
+    <#
+    .SYNOPSIS
+        Adiciona um caminho à variável de ambiente PATH do sistema.
+
+    .DESCRIPTION
+        Esta função adiciona um diretório especificado à variável de ambiente PATH do sistema,
+        garantindo que o caminho não seja duplicado.
+
+    .PARAMETER Path
+        O caminho do diretório que será adicionado à variável de ambiente PATH.
+
+    .EXAMPLE
+        Add-STFPathEnvironmentVariable -Path "C:\Windows\System32"
+
+        Adiciona "C:\Windows\System32" à variável de ambiente PATH do sistema, se ainda não estiver presente.
+    #>
+
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param
+    (
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Path
+    )
+
+    begin
+    {
+        # Inicializa a função.
+        Initialize-ADTFunction -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+    }
+
+    process
+    {
+        try
+        {
+            # Obtém o valor atual da variável PATH do sistema
+            $currentPath = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
+
+            # Verifica se o caminho já está presente
+            if ($currentPath -split ";" -notcontains $Path)
+            {
+                if ($PSCmdlet.ShouldProcess("Adicionar $Path à variável PATH do sistema"))
+                {
+                    # Adiciona o novo caminho
+                    $newPath = "$currentPath;$Path"
+
+                    # Define a variável de ambiente PATH no sistema
+                    [System.Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
+
+                    Write-ADTLogEntry -Message "O caminho '$Path' foi adicionado à variável PATH do sistema." -Severity 0
+                }
+            }
+            else
+            {
+                Write-ADTLogEntry -Message "O caminho '$Path' já está presente na variável PATH do sistema." -Severity 2
+            }
+        }
+        catch
+        {
+            # Processa o erro e o registra
+            Invoke-ADTFunctionErrorHandler -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState -ErrorRecord $_
+        }
+    }
+
+    end
+    {
+        # Finaliza a função.
+        Complete-ADTFunction -Cmdlet $PSCmdlet
+    }
+}
+
+function Remove-STFPathEnvironmentVariable
+{
+    <#
+    .SYNOPSIS
+        Remove um caminho exato da variável de ambiente PATH do sistema.
+
+    .DESCRIPTION
+        Esta função remove um diretório específico da variável de ambiente PATH do sistema,
+        garantindo que apenas a correspondência exata seja excluída.
+
+    .PARAMETER Path
+        O caminho do diretório que será removido da variável de ambiente PATH.
+
+    .EXAMPLE
+        Remove-STFPathEnvironmentVariable -Path "C:\Windows"
+
+        Remove apenas "C:\Windows" da variável PATH do sistema, sem afetar outros caminhos como "C:\Windows\System32".
+    #>
+
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param
+    (
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Path
+    )
+
+    begin
+    {
+        # Inicializa a função.
+        Initialize-ADTFunction -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+    }
+
+    process
+    {
+        try
+        {
+            # Obtém o valor atual da variável PATH do sistema
+            $currentPath = [System.Environment]::GetEnvironmentVariable("Path", "Machine") -split ";"
+
+            # Verifica se o caminho está presente
+            if ($currentPath -contains $Path)
+            {
+                if ($PSCmdlet.ShouldProcess("Remover $Path da variável PATH do sistema"))
+                {
+                    # Remove apenas o caminho exato
+                    $newPath = ($currentPath | Where-Object { $_ -ne $Path }) -join ";"
+
+                    # Define a variável de ambiente PATH no sistema
+                    [System.Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
+
+                    Write-ADTLogEntry -Message "O caminho '$Path' foi removido da variável PATH do sistema." -Severity 0
+                }
+            }
+            else
+            {
+                Write-ADTLogEntry -Message "O caminho '$Path' não foi encontrado na variável PATH do sistema." -Severity 2
+            }
+        }
+        catch
+        {
+            # Processa o erro e o registra
+            Invoke-ADTFunctionErrorHandler -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState -ErrorRecord $_
+        }
+    }
+
+    end
+    {
+        # Finaliza a função.
+        Complete-ADTFunction -Cmdlet $PSCmdlet
+    }
+}
+
+function Add-STFEnvironmentVariable
+{
+    <#
+    .SYNOPSIS
+        Adiciona ou cria uma nova variável de ambiente.
+
+    .DESCRIPTION
+        Esta função cria ou atualiza uma variável de ambiente, permitindo definir seu nome, valor e escopo (Usuário, Máquina ou Processo).
+
+    .PARAMETER Nome
+        O nome da variável de ambiente.
+
+    .PARAMETER Valor
+        O valor da variável de ambiente.
+
+    .PARAMETER Tipo
+        O tipo da variável de ambiente: "User", "Machine" ou "Process".
+        - User: Variável disponível apenas para o usuário atual.
+        - Machine: Variável disponível para todos os usuários do computador.
+        - Process: Variável disponível apenas para o processo atual.
+
+    .EXAMPLE
+        Add-STFEnvironmentVariable -Nome "MinhaVariavel" -Valor "C:\MeusDados" -Tipo "User"
+
+        Cria ou atualiza a variável de ambiente "MinhaVariavel" no escopo do usuário.
+
+    .EXAMPLE
+        Add-STFEnvironmentVariable -Nome "MinhaVariavelGlobal" -Valor "C:\GlobalData" -Tipo "Machine"
+
+        Cria ou atualiza a variável de ambiente "MinhaVariavelGlobal" para todos os usuários do computador.
+    #>
+
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param
+    (
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Nome,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Valor,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("User", "Machine", "Process")]
+        [string]$Tipo
+    )
+
+    begin
+    {
+        # Inicializa a função.
+        Initialize-ADTFunction -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+    }
+
+    process
+    {
+        try
+        {
+            if ($PSCmdlet.ShouldProcess("Criar ou atualizar a variável de ambiente '$Nome' no escopo '$Tipo' com o valor '$Valor'"))
+            {
+                # Define a variável de ambiente conforme o tipo especificado
+                [System.Environment]::SetEnvironmentVariable($Nome, $Valor, $Tipo)
+
+                Write-ADTLogEntry -Message "A variável de ambiente '$Nome' foi adicionada/atualizada com sucesso no escopo '$Tipo'." -Severity 0
+            }
+        }
+        catch
+        {
+            # Processa o erro e o registra
+            Invoke-ADTFunctionErrorHandler -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState -ErrorRecord $_
+        }
+    }
+
+    end
+    {
+        # Finaliza a função.
+        Complete-ADTFunction -Cmdlet $PSCmdlet
+    }
+}
+
+function Remove-STFEnvironmentVariable
+{
+    <#
+    .SYNOPSIS
+        Remove uma variável de ambiente.
+
+    .DESCRIPTION
+        Esta função remove uma variável de ambiente existente, permitindo especificar seu nome e escopo (Usuário, Máquina ou Processo).
+
+    .PARAMETER Nome
+        O nome da variável de ambiente a ser removida.
+
+    .PARAMETER Tipo
+        O tipo da variável de ambiente: "User", "Machine" ou "Process".
+        - User: Variável disponível apenas para o usuário atual.
+        - Machine: Variável disponível para todos os usuários do computador.
+        - Process: Variável disponível apenas para o processo atual.
+
+    .EXAMPLE
+        Remove-STFEnvironmentVariable -Nome "MinhaVariavel" -Tipo "User"
+
+        Remove a variável de ambiente "MinhaVariavel" no escopo do usuário.
+
+    .EXAMPLE
+        Remove-STFEnvironmentVariable -Nome "MinhaVariavelGlobal" -Tipo "Machine"
+
+        Remove a variável de ambiente "MinhaVariavelGlobal" para todos os usuários do computador.
+    #>
+
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param
+    (
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Nome,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("User", "Machine", "Process")]
+        [string]$Tipo
+    )
+
+    begin
+    {
+        # Inicializa a função.
+        Initialize-ADTFunction -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+    }
+
+    process
+    {
+        try
+        {
+            # Obtém o valor atual da variável para verificar se existe
+            $currentValue = [System.Environment]::GetEnvironmentVariable($Nome, $Tipo)
+
+            if ($currentValue -ne $null)
+            {
+                if ($PSCmdlet.ShouldProcess("Remover a variável de ambiente '$Nome' do escopo '$Tipo'"))
+                {
+                    # Remove a variável de ambiente
+                    [System.Environment]::SetEnvironmentVariable($Nome, $null, $Tipo)
+
+                    Write-ADTLogEntry -Message "A variável de ambiente '$Nome' foi removida com sucesso do escopo '$Tipo'." -Severity 0
+                }
+            }
+            else
+            {
+                Write-ADTLogEntry -Message "A variável de ambiente '$Nome' não foi encontrada no escopo '$Tipo'." -severity 2
+            }
+        }
+        catch
+        {
+            # Processa o erro e o registra
+            Invoke-ADTFunctionErrorHandler -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState -ErrorRecord $_
+        }
+    }
+
+    end
+    {
+        # Finaliza a função.
+        Complete-ADTFunction -Cmdlet $PSCmdlet
+    }
+}
 
 ##*===============================================
 ##* MARK: SCRIPT BODY
