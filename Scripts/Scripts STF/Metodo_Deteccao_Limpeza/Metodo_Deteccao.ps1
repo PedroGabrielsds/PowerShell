@@ -1,61 +1,78 @@
-﻿# Script Metodo de Detecção Mensal
-#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-# Passo a Passo
-#Passo 01: Verifica se o Registro já existe, se não existir, irá cria-lo;
-#Passo 02: Coleta a data atual da máquina;
-#Passo 03: Compara a data atual com a data registrada;
-#Passo 04: Verifica a necessidade de rodar ou não o script de limpeza;
+﻿#-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=- Inicio Script -=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-
 
-#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+#=-=-=-=-=-=-=-=-=-=-=-=-=- Passo a Passo =-=-=-=-=-=-=-=-=-=-=-=-=-
+# Passo 1.0: Coleta a data atual da máquina;
+# Passo 1.1: Compara a data atual com a data registrada;
 
-$caminho_registro = "HKLM:\SOFTWARE\Script_Limpeza_Mensal"
-$name_value = "Date"
+#=-=-=-=-=-=-=-=-=-=-=-= Inicio Script =-=-=-=-=-=-==-=-=-=-=-=-=-=-
 
-#Coloca o valor no caminho criado no regedit
-Set-ItemProperty -Path $caminho_registro -Name "Date" -Value "$actual_date"
+#Variáveis:
+$caminho_registro = "HKLM:\SOFTWARE\STF"
+$name_value = "Script_Limpeza_Estacao"
 
-#Para criar a pasta do regedit
-New-Item -Path "HKLM:\Software\Script_Limpeza_Mensal"
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-
 
-#Verifica se o Registro existe, se não existir cria ele e adiciona a data ao registro
-$teste_path = Test-path "HKLM:\Software\Script_Limpeza_Mensal"
-If ($teste_path -eq $false) {
-    Try {
-    #Coloca o valor no caminho criado no regedit
-    Set-ItemProperty -Path $caminho_registro -Name "Date" -Value "$actual_date"
-
-    #Para criar a pasta do regedit
-    New-Item -Path "HKLM:\Software\Script_Limpeza_Mensal"
-        
-    } Catch {
-    
-    
-    }
-
-} Else {
-   
-    
-}
-
+# Passo 1.0: Coleta a data atual da máquina:
 Try {
+    
+    # Coleta a data atual da máquina e registra na variável:
+    $actual_date = Get-Date -format "MM/yyyy"
 
-    $actual_date = Get-Date -format "yyyy/MM"
-    Write-Host "O mês e ano atual é: $actual_date"
-    $registry_date = Get-ItemProperty $caminho_registro | Select -Property $name_value
-    Write-Host "A data registrada no Regedit é $registry_date"
+    # Coleta dados do Registro especificado:
+
+    $registry_date = Get-ItemPropertyvalue -Path $caminho_registro -Name $name_value
     
 } Catch {
 
-    Write-Host "Não foi possível capturar a data atual do computador devido ao erro: $_"
+    Write-Host "Não foi possível capturar a data atual do computador devido ao erro: "
+    write-Host "$_" -BackgroundColor Black -ForegroundColor Red
 
 }
 
-If ($actual_date -eq $registry_date.Date) {
-
-    Write-Host "Não sera necessário rodar o Script de limpeza!!"
+# Passo 1.1: Compara a data atual com a data registrada:
+If ($actual_date -eq $registry_date.Script_Limpeza_Estacao) {
+    
+    Write-Host "O Script de limpeza já rodou este mês!!"
 
 } Else {
 
-    Write-Host "A data registrada é diferente da data atual e o Script ainda não rodou este mês!"
+    #O retorno sem conteúdo vai rodar o script de limpeza
 
+}
+
+#=-=-=-=-=-=-=-=-=-=-=-=-=-= FIM Script =-=-=-=-=-=-==-=-=-=-=-=-=-=-
+
+
+
+
+# Passo 01: Verifica se o Registro já existe, se não existir, irá cria-lo: (PASSO PÓS-INSTALAÇÃO PARA O SCRIPT DE LIMPEZA VER COM O RICARDO)
+
+try {
+
+    $value = Get-ItemPropertyValue -Path $caminho_registro -Name $name_value
+
+} Catch {
+    
+    Write-Host "Erro: $_"
+
+}
+
+If ( $value -ne $null ) {
+
+    Write-host "O registro já existe!"
+
+} Else {
+
+    Try {
+
+        #Coloca o valor no registro
+        Set-ItemProperty -Path $caminho_registro -Name $name_value -Value "$actual_date"
+
+        Write-Host "Registro criado com sucesso!!"
+        
+    } Catch {
+
+        Write-Host "Não foi possível criar os registros devido ao erro $_"
+    
+    }  
 }
